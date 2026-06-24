@@ -1,0 +1,1872 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EcoBot UFMS — Inteligência Cidadã para Resíduos Sólidos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300..700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root{
+  --text-xs:clamp(0.75rem,0.7rem + 0.25vw,0.875rem);
+  --text-sm:clamp(0.875rem,0.8rem + 0.35vw,1rem);
+  --text-base:clamp(1rem,0.95rem + 0.25vw,1.125rem);
+  --text-lg:clamp(1.125rem,1rem + 0.75vw,1.5rem);
+  --text-xl:clamp(1.5rem,1.2rem + 1.25vw,2.25rem);
+  --text-2xl:clamp(2rem,1.2rem + 2.5vw,3.5rem);
+  --text-3xl:clamp(2.5rem,1rem + 4vw,5rem);
+  --space-1:.25rem;--space-2:.5rem;--space-3:.75rem;--space-4:1rem;
+  --space-5:1.25rem;--space-6:1.5rem;--space-8:2rem;--space-10:2.5rem;
+  --space-12:3rem;--space-16:4rem;--space-20:5rem;--space-24:6rem;
+  --radius-sm:.375rem;--radius-md:.5rem;--radius-lg:.75rem;
+  --radius-xl:1rem;--radius-2xl:1.5rem;--radius-full:9999px;
+  --transition:180ms cubic-bezier(0.16,1,0.3,1);
+  --font-display:"Instrument Serif",Georgia,serif;
+  --font-body:"Inter",system-ui,sans-serif;
+  --content-narrow:640px;--content-default:960px;--content-wide:1200px;
+}
+:root,[data-theme="dark"]{
+  --color-bg:#0d1410;--color-surface:#111a14;--color-surface-2:#172018;
+  --color-surface-3:#1e2b1f;--color-surface-offset:#243026;
+  --color-divider:#2a3a2c;--color-border:#334535;
+  --color-text:#d4e8d0;--color-text-muted:#8ab090;--color-text-faint:#4d6b50;
+  --color-text-inverse:#0d1410;
+  --color-primary:#4caf6e;--color-primary-hover:#3d9a5e;
+  --color-primary-active:#2e7a4a;--color-primary-subtle:rgba(76,175,110,.12);
+  --color-gold:#e8c84c;--color-blue:#5b9bd5;--color-orange:#f5a623;
+  --color-red:#e05c5c;
+  --color-whatsapp:#25d366;--color-whatsapp-dark:#128c3f;
+  --shadow-sm:0 1px 3px rgba(0,0,0,.3);
+  --shadow-md:0 4px 16px rgba(0,0,0,.4);
+  --shadow-lg:0 12px 40px rgba(0,0,0,.5);
+}
+[data-theme="light"]{
+  --color-bg:#f4faf5;--color-surface:#f8fdf9;--color-surface-2:#ffffff;
+  --color-surface-3:#edf7ef;--color-surface-offset:#e2f0e4;
+  --color-divider:#c9e0cb;--color-border:#b0cfb3;
+  --color-text:#1a2e1c;--color-text-muted:#4a6b4c;--color-text-faint:#8aac8c;
+  --color-text-inverse:#f8fdf9;
+  --color-primary:#1e7a3a;--color-primary-hover:#166030;
+  --color-primary-active:#0e4a24;--color-primary-subtle:rgba(30,122,58,.1);
+  --color-gold:#b8860b;--color-blue:#2563a8;--color-orange:#d4820a;
+  --shadow-sm:0 1px 3px rgba(0,0,0,.08);
+  --shadow-md:0 4px 16px rgba(0,0,0,.1);
+  --shadow-lg:0 12px 40px rgba(0,0,0,.14);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;scroll-padding-top:5rem;}
+body{font-family:var(--font-body);font-size:var(--text-base);color:var(--color-text);background:var(--color-bg);line-height:1.65;-webkit-font-smoothing:antialiased;min-height:100dvh;}
+img{display:block;max-width:100%;}
+button{cursor:pointer;border:none;background:none;font:inherit;color:inherit;}
+a{color:inherit;text-decoration:none;}
+ul,ol{list-style:none;}
+input,textarea,select{font:inherit;color:inherit;}
+h1,h2,h3,h4,h5,h6{text-wrap:balance;line-height:1.2;}
+::selection{background:var(--color-primary-subtle);color:var(--color-text);}
+:focus-visible{outline:2px solid var(--color-primary);outline-offset:3px;border-radius:var(--radius-sm);}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important;}}
+.container{max-width:var(--content-default);margin-inline:auto;padding-inline:var(--space-5);}
+.container-wide{max-width:var(--content-wide);margin-inline:auto;padding-inline:var(--space-5);}
+.section{padding-block:clamp(var(--space-12),7vw,var(--space-24));}
+.section-sm{padding-block:clamp(var(--space-8),4vw,var(--space-16));}
+.text-center{text-align:center;}
+.label{font-size:var(--text-xs);font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--color-text-muted);}
+.section-title{font-size:var(--text-xl);font-weight:700;margin-bottom:var(--space-2);}
+.section-subtitle{font-size:var(--text-base);color:var(--color-text-muted);max-width:60ch;}
+.badge{display:inline-flex;align-items:center;gap:var(--space-1);padding:2px var(--space-2);border-radius:var(--radius-full);font-size:var(--text-xs);font-weight:600;white-space:nowrap;}
+.badge-green{background:var(--color-primary-subtle);color:var(--color-primary);border:1px solid rgba(76,175,110,.2);}
+.badge-gold{background:rgba(232,200,76,.12);color:var(--color-gold);border:1px solid rgba(232,200,76,.2);}
+.badge-blue{background:rgba(91,155,213,.12);color:var(--color-blue);border:1px solid rgba(91,155,213,.2);}
+.badge-orange{background:rgba(245,166,35,.12);color:var(--color-orange);border:1px solid rgba(245,166,35,.2);}
+.btn{display:inline-flex;align-items:center;gap:var(--space-2);padding:var(--space-3) var(--space-6);border-radius:var(--radius-full);font-size:var(--text-sm);font-weight:600;white-space:nowrap;transition:background var(--transition),transform var(--transition),box-shadow var(--transition);}
+.btn-primary{background:var(--color-primary);color:var(--color-text-inverse);}
+.btn-primary:hover{background:var(--color-primary-hover);transform:translateY(-1px);box-shadow:var(--shadow-md);}
+.btn-ghost{border:1.5px solid var(--color-border);}
+.btn-ghost:hover{background:var(--color-surface-offset);}
+.card{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);padding:var(--space-6);box-shadow:var(--shadow-sm);}
+.card-elevated{background:var(--color-surface-2);box-shadow:var(--shadow-md);}
+.divider{height:1px;background:var(--color-divider);margin-block:var(--space-6);}
+/* NAV */
+.nav{position:sticky;top:0;z-index:100;background:color-mix(in oklab,var(--color-bg) 92%,transparent);backdrop-filter:blur(16px);border-bottom:1px solid var(--color-divider);}
+.nav-inner{max-width:var(--content-wide);margin-inline:auto;padding-inline:var(--space-5);height:60px;display:flex;align-items:center;justify-content:space-between;}
+.nav-logo{display:flex;align-items:center;gap:var(--space-3);font-weight:700;font-size:var(--text-sm);}
+.nav-logo svg{color:var(--color-primary);}
+.nav-links{display:flex;align-items:center;gap:2px;flex-wrap:wrap;}
+.nav-link{padding:3px 8px;border-radius:var(--radius-md);font-size:10px;font-weight:500;color:var(--color-text-muted);transition:color var(--transition),background var(--transition);}
+.nav-link:hover{color:var(--color-text);background:var(--color-surface);}
+.nav-link.active{color:var(--color-primary);background:var(--color-primary-subtle);}
+.nav-actions{display:flex;align-items:center;gap:var(--space-2);}
+.theme-toggle{width:36px;height:36px;border-radius:var(--radius-full);border:1px solid var(--color-border);display:flex;align-items:center;justify-content:center;color:var(--color-text-muted);transition:background var(--transition);}
+.theme-toggle:hover{background:var(--color-surface);color:var(--color-text);}
+.hamburger{display:none;flex-direction:column;gap:4px;padding:var(--space-2);}
+.hamburger span{width:20px;height:2px;background:var(--color-text);border-radius:2px;transition:all .3s;}
+.mobile-nav{display:none;position:fixed;inset:60px 0 0 0;z-index:99;background:var(--color-bg);padding:var(--space-6);flex-direction:column;gap:var(--space-2);overflow-y:auto;}
+.mobile-nav.open{display:flex;}
+.mobile-nav-link{padding:var(--space-3) var(--space-4);border-radius:var(--radius-lg);font-size:var(--text-base);color:var(--color-text-muted);transition:all var(--transition);}
+.mobile-nav-link:hover{background:var(--color-surface);color:var(--color-text);}
+@media(max-width:900px){.nav-links{display:none;}.hamburger{display:flex;}}
+/* HERO */
+.hero{position:relative;overflow:hidden;padding-block:clamp(var(--space-16),10vw,var(--space-24));background:radial-gradient(ellipse 80% 60% at 50% 0%,var(--color-primary-subtle),transparent 60%);}
+.hero-tag{display:inline-flex;align-items:center;gap:var(--space-2);margin-bottom:var(--space-5);}
+.hero-tag-dot{width:8px;height:8px;border-radius:50%;background:var(--color-primary);animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.6;transform:scale(1.3)}}
+.hero-title{font-family:var(--font-display);font-weight:400;font-size:clamp(2.5rem,1.5rem + 4vw,5.5rem);line-height:1.05;margin-bottom:var(--space-4);}
+.hero-title em{font-style:italic;color:var(--color-primary);}
+.hero-tagline{font-size:var(--text-lg);color:var(--color-text-muted);margin-bottom:var(--space-8);max-width:52ch;font-style:italic;}
+.hero-actions{display:flex;gap:var(--space-3);flex-wrap:wrap;margin-bottom:var(--space-12);}
+.hero-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:var(--space-4);}
+.stat-card{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);padding:var(--space-5);text-align:center;}
+.stat-num{font-family:var(--font-display);font-size:var(--text-2xl);color:var(--color-primary);font-weight:400;line-height:1;margin-bottom:var(--space-1);font-variant-numeric:tabular-nums;}
+.stat-label{font-size:var(--text-xs);color:var(--color-text-muted);}
+.hero-wave{position:absolute;bottom:-2px;left:0;width:100%;pointer-events:none;}
+.section-header{margin-bottom:var(--space-10);}
+.section-header .label{margin-bottom:var(--space-3);display:block;}
+/* PROBLEM */
+.problem-numbers{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--space-5);margin-bottom:var(--space-10);}
+.problem-num-card{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);padding:var(--space-6);position:relative;overflow:hidden;}
+.problem-num-card::before{content:"";position:absolute;inset:0;background:linear-gradient(135deg,var(--color-primary-subtle),transparent);}
+.prob-big{font-size:clamp(2rem,4vw,3.5rem);font-weight:700;color:var(--color-primary);font-variant-numeric:tabular-nums;line-height:1;margin-bottom:var(--space-2);position:relative;}
+.prob-desc{font-size:var(--text-sm);color:var(--color-text-muted);position:relative;}
+.prob-source{font-size:var(--text-xs);color:var(--color-text-faint);margin-top:var(--space-2);position:relative;}
+.failure-cards{display:flex;flex-direction:column;gap:var(--space-4);margin-bottom:var(--space-10);}
+.failure-card{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);padding:var(--space-5) var(--space-6);display:grid;grid-template-columns:48px 1fr;gap:var(--space-4);align-items:start;}
+.failure-num{width:48px;height:48px;border-radius:var(--radius-full);background:var(--color-primary-subtle);color:var(--color-primary);font-size:var(--text-lg);font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.failure-title{font-weight:700;margin-bottom:var(--space-1);}
+.failure-desc{font-size:var(--text-sm);color:var(--color-text-muted);}
+.map-visual{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-6);}
+.bairros-list{display:flex;flex-direction:column;gap:var(--space-3);}
+.bairro-item{display:flex;align-items:flex-start;gap:var(--space-3);padding:var(--space-3) var(--space-4);background:var(--color-surface-offset);border-radius:var(--radius-lg);border:1px solid var(--color-border);}
+.bairro-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;margin-top:4px;}
+.bairro-name{font-weight:600;font-size:var(--text-sm);}
+.bairro-desc{font-size:var(--text-xs);color:var(--color-text-muted);}
+.territory-numbers{display:flex;flex-direction:column;gap:var(--space-3);justify-content:center;}
+.t-num{text-align:center;padding:var(--space-3);background:var(--color-surface);border-radius:var(--radius-lg);border:1px solid var(--color-border);}
+.t-num-big{font-family:var(--font-display);font-size:clamp(1.8rem,3vw,2.5rem);color:var(--color-primary);}
+.t-num-label{font-size:var(--text-xs);color:var(--color-text-muted);}
+/* MODULES */
+.modules-grid{display:grid;gap:var(--space-6);}
+.module-card{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-2xl);padding:var(--space-8);display:grid;grid-template-columns:160px 1fr;gap:var(--space-8);align-items:center;}
+.module-card.rev{direction:rtl;}.module-card.rev > *{direction:ltr;}
+.module-icon-wrap{aspect-ratio:1;border-radius:var(--radius-xl);background:var(--color-primary-subtle);display:flex;align-items:center;justify-content:center;font-size:3rem;max-height:160px;}
+.module-num{font-size:var(--text-xs);font-weight:700;color:var(--color-primary);text-transform:uppercase;letter-spacing:.1em;margin-bottom:var(--space-2);}
+.module-name{font-family:var(--font-display);font-size:var(--text-xl);margin-bottom:var(--space-3);}
+.module-desc{font-size:var(--text-sm);color:var(--color-text-muted);margin-bottom:var(--space-4);line-height:1.7;}
+.module-features{display:flex;flex-direction:column;gap:var(--space-2);}
+.module-feature{display:flex;gap:var(--space-2);font-size:var(--text-sm);color:var(--color-text-muted);}
+.module-feature::before{content:"→";color:var(--color-primary);flex-shrink:0;}
+/* FLOW */
+.flow-steps{display:flex;overflow-x:auto;padding-bottom:var(--space-2);}
+.flow-step{flex:1;min-width:130px;text-align:center;position:relative;padding:var(--space-6) var(--space-3);}
+.flow-step::after{content:"›";position:absolute;right:-8px;top:40%;color:var(--color-primary);font-size:var(--text-lg);}
+.flow-step:last-child::after{display:none;}
+.flow-num{width:44px;height:44px;border-radius:var(--radius-full);background:var(--color-primary);color:var(--color-text-inverse);font-weight:700;display:flex;align-items:center;justify-content:center;margin:0 auto var(--space-3);}
+.flow-title{font-weight:700;font-size:var(--text-sm);margin-bottom:var(--space-1);}
+.flow-desc{font-size:var(--text-xs);color:var(--color-text-muted);max-width:18ch;margin:0 auto;}
+/* WA REASONS */
+.wa-reasons{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:var(--space-4);}
+.wa-reason{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);padding:var(--space-5);}
+.wa-icon{font-size:1.8rem;margin-bottom:var(--space-3);}
+.wa-title{font-weight:700;font-size:var(--text-sm);margin-bottom:var(--space-2);}
+.wa-desc{font-size:var(--text-xs);color:var(--color-text-muted);line-height:1.6;}
+.publics-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:var(--space-4);}
+.public-card{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);padding:var(--space-5);}
+.public-icon{font-size:2rem;margin-bottom:var(--space-3);}
+.public-name{font-weight:700;font-size:var(--text-sm);margin-bottom:var(--space-2);}
+.public-desc{font-size:var(--text-xs);color:var(--color-text-muted);line-height:1.65;}
+/* ARCH */
+.arch-diagram{background:var(--color-surface-2);border:1px solid var(--color-border);border-radius:var(--radius-2xl);padding:var(--space-8);margin-bottom:var(--space-8);overflow-x:auto;}
+.arch-flow{display:flex;align-items:center;gap:var(--space-2);flex-wrap:wrap;justify-content:center;}
+.arch-node{background:var(--color-surface-offset);border:1px solid var(--color-border);border-radius:var(--radius-lg);padding:var(--space-3) var(--space-4);text-align:center;min-width:90px;}
+.arch-node-icon{font-size:1.4rem;margin-bottom:var(--space-1);}
+.arch-node-name{font-size:var(--text-xs);font-weight:700;}
+.arch-node-tech{font-size:9px;color:var(--color-text-faint);}
+.arch-arrow{color:var(--color-primary);font-size:var(--text-lg);flex-shrink:0;}
+.ai-fronts{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--space-5);margin-bottom:var(--space-8);}
+.ai-front{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);padding:var(--space-6);text-align:center;}
+.ai-front-icon{font-size:2.5rem;margin-bottom:var(--space-3);}
+.ai-front-name{font-weight:700;font-size:var(--text-sm);margin-bottom:var(--space-2);}
+.ai-front-desc{font-size:var(--text-xs);color:var(--color-text-muted);line-height:1.6;}
+.ai-front-tool{margin-top:var(--space-3);}
+.stack-table{width:100%;border-collapse:collapse;font-size:var(--text-sm);}
+.stack-table th{text-align:left;padding:var(--space-3) var(--space-4);border-bottom:2px solid var(--color-divider);color:var(--color-text-muted);font-size:var(--text-xs);text-transform:uppercase;letter-spacing:.06em;}
+.stack-table td{padding:var(--space-3) var(--space-4);border-bottom:1px solid var(--color-divider);}
+.stack-table tr:last-child td{border-bottom:none;}
+.stack-table tr:hover td{background:var(--color-surface-offset);}
+.cost-free{color:var(--color-primary);font-weight:600;}
+.ethics-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:var(--space-4);}
+.ethics-item{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-lg);padding:var(--space-4);display:flex;gap:var(--space-3);}
+.ethics-icon{font-size:1.2rem;flex-shrink:0;margin-top:2px;}
+.ethics-title{font-weight:700;font-size:var(--text-sm);margin-bottom:var(--space-1);}
+.ethics-desc{font-size:var(--text-xs);color:var(--color-text-muted);line-height:1.6;}
+/* METODO */
+.method-table{display:flex;flex-direction:column;gap:var(--space-3);}
+.method-row{display:grid;grid-template-columns:160px 1fr;gap:var(--space-4);background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);padding:var(--space-4) var(--space-5);align-items:center;}
+.method-area{font-weight:700;font-size:var(--text-sm);color:var(--color-primary);}
+.method-app{font-size:var(--text-sm);color:var(--color-text-muted);}
+/* PILOTO */
+.pilot-timeline{display:flex;flex-direction:column;gap:var(--space-4);}
+.pilot-phase{display:grid;grid-template-columns:120px 1fr;gap:var(--space-5);background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);padding:var(--space-5);}
+.pilot-period{font-size:var(--text-xs);font-weight:700;color:var(--color-primary);text-transform:uppercase;letter-spacing:.06em;}
+.pilot-phase-name{font-weight:700;font-size:var(--text-sm);margin-bottom:var(--space-1);}
+.pilot-deliverables{font-size:var(--text-xs);color:var(--color-text-muted);line-height:1.7;}
+.metrics-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:var(--space-4);}
+.metric-card{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);padding:var(--space-5);}
+.metric-target{font-family:var(--font-display);font-size:var(--text-xl);color:var(--color-primary);margin-bottom:var(--space-1);font-variant-numeric:tabular-nums;}
+.metric-name{font-size:var(--text-sm);font-weight:600;margin-bottom:var(--space-1);}
+.metric-how{font-size:var(--text-xs);color:var(--color-text-faint);}
+.budget-table{width:100%;border-collapse:collapse;font-size:var(--text-sm);}
+.budget-table th{text-align:left;padding:var(--space-3) var(--space-4);border-bottom:2px solid var(--color-divider);font-size:var(--text-xs);text-transform:uppercase;letter-spacing:.06em;color:var(--color-text-muted);}
+.budget-table td{padding:var(--space-3) var(--space-4);border-bottom:1px solid var(--color-divider);}
+.budget-table tr:last-child td{border-bottom:none;font-weight:700;}
+.budget-value{font-variant-numeric:tabular-nums;font-weight:600;color:var(--color-primary);text-align:right;}
+.partners-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:var(--space-4);}
+.partner-card{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);padding:var(--space-5);text-align:center;}
+.partner-icon{font-size:2rem;margin-bottom:var(--space-2);}
+.partner-name{font-weight:700;font-size:var(--text-sm);margin-bottom:var(--space-1);}
+.partner-role{font-size:var(--text-xs);color:var(--color-text-muted);}
+/* ODS */
+.ods-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:var(--space-5);}
+.ods-card{border-radius:var(--radius-xl);padding:var(--space-6);position:relative;overflow:hidden;}
+.ods-4{background:rgba(232,200,76,.08);border:1px solid rgba(232,200,76,.25);}
+.ods-11{background:rgba(255,152,0,.08);border:1px solid rgba(255,152,0,.25);}
+.ods-12{background:rgba(76,175,80,.08);border:1px solid rgba(76,175,80,.25);}
+.ods-13{background:rgba(0,188,212,.08);border:1px solid rgba(0,188,212,.25);}
+.ods-num{font-size:clamp(2.5rem,5vw,4rem);font-weight:900;opacity:.15;position:absolute;top:var(--space-3);right:var(--space-4);line-height:1;}
+.ods-label{font-size:var(--text-xs);font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:var(--space-2);}
+.ods-title{font-weight:700;margin-bottom:var(--space-3);}
+.ods-desc{font-size:var(--text-sm);color:var(--color-text-muted);line-height:1.65;}
+.impact-qual{display:grid;grid-template-columns:repeat(2,1fr);gap:var(--space-4);}
+.iq-card{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);padding:var(--space-5);}
+.iq-icon{font-size:1.5rem;margin-bottom:var(--space-2);}
+.iq-title{font-weight:700;font-size:var(--text-sm);margin-bottom:var(--space-2);}
+.iq-desc{font-size:var(--text-xs);color:var(--color-text-muted);line-height:1.65;}
+/* ROADMAP */
+.roadmap-steps{display:flex;flex-direction:column;}
+.roadmap-item{display:grid;grid-template-columns:90px 24px 1fr;gap:var(--space-4);padding-bottom:var(--space-8);}
+.roadmap-item:last-child{padding-bottom:0;}
+.roadmap-date{font-size:var(--text-xs);font-weight:700;color:var(--color-primary);text-align:right;padding-top:3px;}
+.roadmap-line{display:flex;flex-direction:column;align-items:center;}
+.roadmap-dot{width:24px;height:24px;border-radius:50%;background:var(--color-primary);border:3px solid var(--color-bg);flex-shrink:0;}
+.roadmap-connector{flex:1;width:2px;background:var(--color-divider);margin-top:2px;}
+.roadmap-item:last-child .roadmap-connector{display:none;}
+.roadmap-title{font-weight:700;font-size:var(--text-sm);margin-bottom:var(--space-2);}
+.roadmap-desc{font-size:var(--text-xs);color:var(--color-text-muted);line-height:1.65;}
+/* RISCOS */
+.risks-table{display:flex;flex-direction:column;gap:var(--space-3);}
+.risk-item{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);padding:var(--space-5);display:grid;grid-template-columns:1fr auto;gap:var(--space-4);}
+.risk-name{font-weight:700;font-size:var(--text-sm);margin-bottom:var(--space-2);}
+.risk-mitigation{font-size:var(--text-xs);color:var(--color-text-muted);line-height:1.65;}
+.risk-badges{display:flex;gap:var(--space-2);flex-shrink:0;flex-wrap:wrap;justify-content:flex-end;}
+/* HACK CRONOGRAMA */
+.hack-timeline{display:flex;flex-direction:column;gap:var(--space-3);}
+.hack-item{display:grid;grid-template-columns:130px 1fr;background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-lg);padding:var(--space-4) var(--space-5);gap:var(--space-4);align-items:center;}
+.hack-date{font-size:var(--text-xs);font-weight:700;color:var(--color-primary);font-variant-numeric:tabular-nums;}
+.hack-event{font-size:var(--text-sm);font-weight:600;}
+.hack-item.highlight{border-color:var(--color-primary);background:var(--color-primary-subtle);}
+.hack-item.highlight .hack-event{color:var(--color-primary);}
+/* EQUIPE */
+.team-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:var(--space-5);}
+.team-card{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);padding:var(--space-6);text-align:center;}
+.team-avatar{width:60px;height:60px;border-radius:var(--radius-full);margin:0 auto var(--space-3);display:flex;align-items:center;justify-content:center;font-size:1.1rem;font-weight:700;background:var(--color-primary-subtle);color:var(--color-primary);border:2px solid var(--color-border);}
+.team-leader .team-avatar{border-color:var(--color-primary);}
+.team-name{font-weight:700;font-size:var(--text-sm);margin-bottom:var(--space-1);}
+.team-rga{font-size:10px;color:var(--color-text-faint);font-variant-numeric:tabular-nums;margin-bottom:var(--space-2);}
+.team-role{font-size:var(--text-xs);color:var(--color-text-muted);margin-bottom:var(--space-3);}
+/* REPLICA */
+.replica-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--space-5);}
+.replica-card{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);padding:var(--space-6);}
+.replica-icon{font-size:2rem;margin-bottom:var(--space-3);}
+.replica-title{font-weight:700;margin-bottom:var(--space-2);}
+.replica-desc{font-size:var(--text-sm);color:var(--color-text-muted);line-height:1.65;}
+/* CHATBOT */
+.chatbot-section{border-top:1px solid var(--color-divider);border-bottom:1px solid var(--color-divider);}
+.chatbot-container{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-8);align-items:start;}
+.chat-phone{background:var(--color-surface-2);border:1px solid var(--color-border);border-radius:var(--radius-2xl);overflow:hidden;box-shadow:var(--shadow-lg);position:sticky;top:80px;}
+.chat-header{background:#128c3f;padding:var(--space-4);display:flex;align-items:center;gap:var(--space-3);}
+.chat-avatar{width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:1.3rem;}
+.chat-info .name{font-weight:700;color:#fff;font-size:var(--text-sm);}
+.chat-info .status{font-size:var(--text-xs);color:rgba(255,255,255,.8);}
+.chat-messages{padding:var(--space-4);max-height:360px;overflow-y:auto;display:flex;flex-direction:column;gap:var(--space-2);background:var(--color-surface);}
+.chat-msg{max-width:85%;border-radius:var(--radius-lg);padding:var(--space-2) var(--space-3);font-size:var(--text-sm);line-height:1.5;}
+.chat-msg.bot{background:var(--color-surface-2);border:1px solid var(--color-border);border-radius:var(--radius-lg) var(--radius-lg) var(--radius-lg) 4px;align-self:flex-start;}
+.chat-msg.user{background:#dcf8c6;color:#1a2e1c;border-radius:var(--radius-lg) var(--radius-lg) 4px var(--radius-lg);align-self:flex-end;}
+[data-theme="dark"] .chat-msg.user{background:#1a4d2a;color:#d4e8d0;}
+.chat-time{font-size:9px;color:var(--color-text-faint);margin-top:3px;text-align:right;}
+.chat-input-bar{padding:var(--space-3);border-top:1px solid var(--color-divider);display:flex;gap:var(--space-2);background:var(--color-surface-2);}
+.chat-input{flex:1;padding:var(--space-2) var(--space-3);background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-full);font-size:var(--text-sm);outline:none;}
+.chat-send{width:36px;height:36px;border-radius:50%;background:#25d366;color:#fff;display:flex;align-items:center;justify-content:center;}
+.chat-scenarios{display:flex;flex-direction:column;gap:var(--space-3);}
+.scenario-btn{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);padding:var(--space-4);text-align:left;width:100%;transition:all var(--transition);}
+.scenario-btn:hover,.scenario-btn.active{border-color:var(--color-primary);background:var(--color-primary-subtle);}
+.scenario-icon{font-size:1.4rem;margin-bottom:var(--space-2);}
+.scenario-title{font-weight:700;font-size:var(--text-sm);margin-bottom:var(--space-1);}
+.scenario-desc{font-size:var(--text-xs);color:var(--color-text-muted);}
+/* DASHBOARD */
+.dashboard-demo{background:var(--color-surface-2);border:1px solid var(--color-border);border-radius:var(--radius-2xl);overflow:hidden;}
+.dash-header{padding:var(--space-4) var(--space-6);border-bottom:1px solid var(--color-divider);display:flex;align-items:center;justify-content:space-between;}
+.dash-title{font-weight:700;font-size:var(--text-sm);}
+.live-badge{display:flex;align-items:center;gap:var(--space-1);font-size:var(--text-xs);color:var(--color-primary);}
+.live-dot{width:8px;height:8px;border-radius:50%;background:var(--color-primary);animation:pulse 1.5s infinite;}
+.dash-kpis{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--color-divider);}
+.dash-kpi{padding:var(--space-5) var(--space-4);border-right:1px solid var(--color-divider);}
+.dash-kpi:last-child{border-right:none;}
+.dash-kpi-val{font-size:var(--text-xl);font-weight:700;font-variant-numeric:tabular-nums;color:var(--color-primary);line-height:1;margin-bottom:var(--space-1);}
+.dash-kpi-label{font-size:var(--text-xs);color:var(--color-text-muted);}
+.dash-kpi-delta{font-size:10px;color:var(--color-primary);margin-top:var(--space-1);}
+.dash-body{display:grid;grid-template-columns:1fr 1fr;}
+.dash-chart-area{padding:var(--space-5);border-right:1px solid var(--color-divider);}
+.dash-chart-title{font-size:var(--text-xs);font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--color-text-muted);margin-bottom:var(--space-4);}
+.bar-chart{display:flex;flex-direction:column;gap:var(--space-3);}
+.bar-row{display:grid;grid-template-columns:80px 1fr 36px;gap:var(--space-2);align-items:center;}
+.bar-label{font-size:var(--text-xs);color:var(--color-text-muted);text-align:right;}
+.bar-track{height:10px;background:var(--color-surface-offset);border-radius:var(--radius-full);overflow:hidden;}
+.bar-fill{height:100%;background:var(--color-primary);border-radius:var(--radius-full);width:0%;transition:width 1.5s cubic-bezier(.16,1,.3,1);}
+.bar-val{font-size:var(--text-xs);font-variant-numeric:tabular-nums;font-weight:600;}
+.dash-map-area{padding:var(--space-5);}
+.heatmap{position:relative;background:var(--color-surface);border-radius:var(--radius-lg);overflow:hidden;aspect-ratio:4/3;border:1px solid var(--color-border);}
+.heatmap-label{position:absolute;top:var(--space-2);left:var(--space-3);font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--color-text-faint);}
+.heat-point{position:absolute;border-radius:50%;transform:translate(-50%,-50%);animation:heatpulse 2.5s ease-in-out infinite;}
+@keyframes heatpulse{0%,100%{opacity:.7;transform:translate(-50%,-50%) scale(1)}50%{opacity:1;transform:translate(-50%,-50%) scale(1.2)}}
+/* REFS */
+.refs-list{display:flex;flex-direction:column;gap:var(--space-3);}
+.ref-item{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-lg);padding:var(--space-4) var(--space-5);font-size:var(--text-xs);color:var(--color-text-muted);line-height:1.7;}
+.ref-item strong{color:var(--color-text);}
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .6s,transform .6s cubic-bezier(.16,1,.3,1);}
+.reveal.visible{opacity:1;transform:translateY(0);}
+@media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none;}}
+/* CTA/FOOTER */
+.cta-section{text-align:center;padding-block:var(--space-24);background:radial-gradient(ellipse 80% 60% at 50% 100%,var(--color-primary-subtle),transparent);}
+.cta-quote{font-family:var(--font-display);font-size:clamp(1.5rem,3vw,2.5rem);font-style:italic;margin-bottom:var(--space-8);max-width:26ch;margin-inline:auto;color:var(--color-text-muted);}
+.cta-quote span{color:var(--color-primary);font-style:normal;}
+.footer{border-top:1px solid var(--color-divider);padding:var(--space-8) 0;color:var(--color-text-faint);font-size:var(--text-xs);}
+.footer-inner{max-width:var(--content-wide);margin-inline:auto;padding-inline:var(--space-5);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:var(--space-4);}
+.footer-logo{display:flex;align-items:center;gap:var(--space-2);}
+/* RESPONSIVE */
+@media(max-width:900px){
+  .module-card,.module-card.rev{grid-template-columns:1fr;}
+  .module-card.rev{direction:ltr;}
+  .module-icon-wrap{max-height:100px;font-size:2.5rem;}
+  .ai-fronts{grid-template-columns:1fr;}
+  .chatbot-container{grid-template-columns:1fr;}
+  .chat-phone{position:static;}
+  .dash-kpis{grid-template-columns:repeat(2,1fr);}
+  .dash-body{grid-template-columns:1fr;}
+  .dash-chart-area{border-right:none;border-bottom:1px solid var(--color-divider);}
+  .replica-grid{grid-template-columns:1fr;}
+  .ethics-grid{grid-template-columns:1fr;}
+  .impact-qual{grid-template-columns:1fr;}
+}
+@media(max-width:640px){
+  .problem-numbers{grid-template-columns:1fr;}
+  .failure-card{grid-template-columns:1fr;}
+  .map-visual{grid-template-columns:1fr;}
+  .method-row{grid-template-columns:1fr;}
+  .pilot-phase{grid-template-columns:1fr;}
+  .hack-item{grid-template-columns:1fr;}
+  .roadmap-item{grid-template-columns:70px 16px 1fr;gap:var(--space-3);}
+  .risk-item{grid-template-columns:1fr;}
+  .risk-badges{justify-content:flex-start;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav" role="navigation" aria-label="Navegação principal">
+  <div class="nav-inner">
+    <a href="#inicio" class="nav-logo">
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-label="EcoBot Logo">
+        <circle cx="14" cy="14" r="13" stroke="currentColor" stroke-width="1.5"/>
+        <path d="M8 18c2-4 4-6 6-6s4 2 6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        <circle cx="14" cy="10" r="2" fill="currentColor"/>
+        <path d="M11 14.5c1-.5 2-.5 3 0s2 .5 3 0" stroke="currentColor" stroke-width="1" stroke-linecap="round" opacity=".5"/>
+      </svg>
+      <span>EcoBot <span style="color:var(--color-text-muted);font-weight:400">UFMS</span></span>
+    </a>
+    <div class="nav-links" role="list">
+      <a href="#problema" class="nav-link" role="listitem">Problema</a>
+      <a href="#territorio" class="nav-link" role="listitem">Território</a>
+      <a href="#solucao" class="nav-link" role="listitem">Solução</a>
+      <a href="#arquitetura" class="nav-link" role="listitem">Arquitetura</a>
+      <a href="#metodologia" class="nav-link" role="listitem">Metodologia</a>
+      <a href="#piloto" class="nav-link" role="listitem">Piloto</a>
+      <a href="#impacto" class="nav-link" role="listitem">Impacto</a>
+      <a href="#roadmap" class="nav-link" role="listitem">Roadmap</a>
+      <a href="#riscos" class="nav-link" role="listitem">Riscos</a>
+      <a href="#equipe" class="nav-link" role="listitem">Equipe</a>
+      <a href="#replicacao" class="nav-link" role="listitem">Replicação</a>
+      <a href="#demo" class="nav-link" role="listitem">Demo</a>
+      <a href="#dashboard" class="nav-link" role="listitem">Dashboard</a>
+      <a href="#referencias" class="nav-link" role="listitem">Refs</a>
+    </div>
+    <div class="nav-actions">
+      <button class="theme-toggle" data-theme-toggle aria-label="Alternar modo escuro/claro" title="Alternar tema">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+      <button class="hamburger" id="hamburger" aria-label="Abrir menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+<nav class="mobile-nav" id="mobileNav" aria-label="Navegação mobile">
+  <a href="#problema" class="mobile-nav-link">Problema</a>
+  <a href="#territorio" class="mobile-nav-link">Território</a>
+  <a href="#solucao" class="mobile-nav-link">Solução</a>
+  <a href="#arquitetura" class="mobile-nav-link">Arquitetura Técnica</a>
+  <a href="#metodologia" class="mobile-nav-link">Metodologia</a>
+  <a href="#piloto" class="mobile-nav-link">Piloto</a>
+  <a href="#impacto" class="mobile-nav-link">Impacto &amp; ODS</a>
+  <a href="#roadmap" class="mobile-nav-link">Roadmap</a>
+  <a href="#riscos" class="mobile-nav-link">Riscos</a>
+  <a href="#equipe" class="mobile-nav-link">Equipe</a>
+  <a href="#replicacao" class="mobile-nav-link">Replicação</a>
+  <a href="#demo" class="mobile-nav-link">Demo do Chatbot</a>
+  <a href="#dashboard" class="mobile-nav-link">Painel Cidadão</a>
+  <a href="#referencias" class="mobile-nav-link">Referências</a>
+</nav>
+
+<!-- HERO -->
+<section id="inicio" class="hero">
+  <div class="container">
+    <div class="hero-tag">
+      <span class="hero-tag-dot"></span>
+      <span class="label">UFMS · Hackathon de Inovação Social 2025 · Campo Grande/MS</span>
+    </div>
+    <h1 class="hero-title">EcoBot<br><em>UFMS</em></h1>
+    <p class="hero-tagline">Inteligência cidadã para resíduos sólidos — chatbot no WhatsApp, painel de dados abertos e gamificação comunitária.</p>
+    <div class="hero-actions">
+      <a href="#demo" class="btn btn-primary">▶ Demo interativo</a>
+      <a href="#solucao" class="btn btn-ghost">Ver solução</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-card reveal">
+        <div class="stat-num" data-count="115000" data-suffix="">115 mil</div>
+        <div class="stat-label">habitantes no território-piloto</div>
+      </div>
+      <div class="stat-card reveal">
+        <div class="stat-num">R$&nbsp;<span data-count="2000">2.000</span></div>
+        <div class="stat-label">custo total do piloto (6 meses)</div>
+      </div>
+      <div class="stat-card reveal">
+        <div class="stat-num" data-count="3000">3.000</div>
+        <div class="stat-label">cidadãos cadastrados (meta)</div>
+      </div>
+      <div class="stat-card reveal">
+        <div class="stat-num" data-count="500">500</div>
+        <div class="stat-label">denúncias esperadas no piloto</div>
+      </div>
+      <div class="stat-card reveal">
+        <div class="stat-num" data-count="100">100%</div>
+        <div class="stat-label">open-source &amp; custo zero de software</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEMA -->
+<section id="problema" class="section">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="label">01 — Diagnóstico</span>
+      <h2 class="section-title">O problema: três falhas sistêmicas</h2>
+      <p class="section-subtitle">Campo Grande gera cerca de 1.400 toneladas de lixo por dia. A gestão enfrenta falhas estruturais que comprometem saúde pública, meio ambiente e cidadania.</p>
+    </div>
+    <div class="problem-numbers reveal">
+      <div class="problem-num-card">
+        <div class="prob-big">1.400 t</div>
+        <div class="prob-desc">de resíduos gerados por dia em Campo Grande</div>
+        <div class="prob-source">Fonte: SEMADUR/PMCG</div>
+      </div>
+      <div class="problem-num-card">
+        <div class="prob-big">&lt;5%</div>
+        <div class="prob-desc">taxa de reciclagem efetiva — abaixo da média nacional de 4%</div>
+        <div class="prob-source">Fonte: SNIS 2022</div>
+      </div>
+      <div class="problem-num-card">
+        <div class="prob-big">70%</div>
+        <div class="prob-desc">dos pontos críticos de descarte irregular estão em 6 bairros</div>
+        <div class="prob-source">Fonte: Diagnóstico EcoBot</div>
+      </div>
+    </div>
+    <div class="failure-cards reveal">
+      <div class="failure-card">
+        <div class="failure-num">1</div>
+        <div>
+          <div class="failure-title">Falha de Informação</div>
+          <div class="failure-desc">Cidadãos não conhecem rotas de coleta seletiva, horários de Ecopontos e pontos de descarte correto. Dados de reciclagem não chegam à população de forma acessível. A prefeitura publica informações, mas não há canal de retorno cidadão.</div>
+        </div>
+      </div>
+      <div class="failure-card">
+        <div class="failure-num">2</div>
+        <div>
+          <div class="failure-title">Falha de Engajamento</div>
+          <div class="failure-desc">Campanhas de educação ambiental são pontuais, não contínuas. Não há mecanismo de feedback entre cidadão e poder público. A gamificação e o reconhecimento cidadão são ausentes, reduzindo adesão a práticas sustentáveis.</div>
+        </div>
+      </div>
+      <div class="failure-card">
+        <div class="failure-num">3</div>
+        <div>
+          <div class="failure-title">Falha de Dados</div>
+          <div class="failure-desc">Dados de descarte irregular são coletados de forma reativa. Não há georreferenciamento sistemático de denúncias. A SEMADUR não possui painel público de monitoramento em tempo real, limitando planejamento e transparência.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TERRITÓRIO -->
+<section id="territorio" class="section" style="background:var(--color-surface);">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="label">02 — Território-Piloto</span>
+      <h2 class="section-title">6 bairros · 115 mil habitantes</h2>
+      <p class="section-subtitle">Recorte prioritário baseado em densidade habitacional, presença de catadores organizados e histórico de denúncias de descarte irregular.</p>
+    </div>
+    <div class="map-visual reveal">
+      <div class="bairros-list">
+        <div class="bairro-item">
+          <div class="bairro-dot" style="background:#4caf6e;"></div>
+          <div>
+            <div class="bairro-name">Tiradentes</div>
+            <div class="bairro-desc">Alto índice de descarte em vias públicas · presença de catadores não organizados</div>
+          </div>
+        </div>
+        <div class="bairro-item">
+          <div class="bairro-dot" style="background:#e8c84c;"></div>
+          <div>
+            <div class="bairro-name">Nova Lima</div>
+            <div class="bairro-desc">Ecoponto subutilizado · oportunidade de ativação comunitária</div>
+          </div>
+        </div>
+        <div class="bairro-item">
+          <div class="bairro-dot" style="background:#5b9bd5;"></div>
+          <div>
+            <div class="bairro-name">Coronel Antonino</div>
+            <div class="bairro-desc">Bairro com associação de moradores ativa · parceiro estratégico</div>
+          </div>
+        </div>
+        <div class="bairro-item">
+          <div class="bairro-dot" style="background:#f5a623;"></div>
+          <div>
+            <div class="bairro-name">Jardim Aeroporto</div>
+            <div class="bairro-desc">Concentração de pontos críticos · prioridade de denúncia</div>
+          </div>
+        </div>
+        <div class="bairro-item">
+          <div class="bairro-dot" style="background:#e05c5c;"></div>
+          <div>
+            <div class="bairro-name">Aero Rancho</div>
+            <div class="bairro-desc">Alta densidade · coleta seletiva irregular</div>
+          </div>
+        </div>
+        <div class="bairro-item">
+          <div class="bairro-dot" style="background:#a855f7;"></div>
+          <div>
+            <div class="bairro-name">Santo Antônio</div>
+            <div class="bairro-desc">Parceria com escola estadual · público infanto-juvenil</div>
+          </div>
+        </div>
+      </div>
+      <div class="territory-numbers">
+        <div class="t-num">
+          <div class="t-num-big">115 mil</div>
+          <div class="t-num-label">Habitantes no território</div>
+        </div>
+        <div class="t-num">
+          <div class="t-num-big">6</div>
+          <div class="t-num-label">Bairros prioritários</div>
+        </div>
+        <div class="t-num">
+          <div class="t-num-big">3</div>
+          <div class="t-num-label">Ecopontos ativos no raio</div>
+        </div>
+        <div class="t-num">
+          <div class="t-num-big">2</div>
+          <div class="t-num-label">Associações de catadores parceiras</div>
+        </div>
+        <div class="t-num">
+          <div class="t-num-big">5</div>
+          <div class="t-num-label">Escolas parceiras previstas</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SOLUÇÃO -->
+<section id="solucao" class="section">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="label">03 — Solução</span>
+      <h2 class="section-title">Três módulos integrados</h2>
+      <p class="section-subtitle">O EcoBot UFMS é uma plataforma trimodular que integra canal cidadão, educação ambiental personalizada e painel de dados abertos — tudo via WhatsApp e web.</p>
+    </div>
+    <div class="modules-grid">
+      <div class="module-card reveal">
+        <div class="module-icon-wrap">🤖</div>
+        <div>
+          <div class="module-num">Módulo 01</div>
+          <h3 class="module-name">Canal Cidadão Inteligente</h3>
+          <p class="module-desc">Chatbot no WhatsApp com inteligência artificial para receber denúncias de descarte irregular, fornecer informações de coleta seletiva, localizar Ecopontos e conectar cidadão com a SEMADUR — 24h por dia, em linguagem natural.</p>
+          <div class="module-features">
+            <div class="module-feature">Registro fotográfico georreferenciado de descarte irregular</div>
+            <div class="module-feature">Consulta de rotas de coleta seletiva por endereço</div>
+            <div class="module-feature">Localização do Ecoponto mais próximo com horários</div>
+            <div class="module-feature">Agendamento de coleta de entulho e eletroeletrônicos</div>
+            <div class="module-feature">Sistema de protocolo e acompanhamento de denúncia</div>
+            <div class="module-feature">Integração com SEMADUR e Ouvidoria Municipal</div>
+          </div>
+        </div>
+      </div>
+      <div class="module-card rev reveal">
+        <div class="module-icon-wrap">🎓</div>
+        <div>
+          <div class="module-num">Módulo 02</div>
+          <h3 class="module-name">EcoAprende — Educação Ambiental Gamificada</h3>
+          <p class="module-desc">Microaulas semanais adaptadas por perfil (criança, jovem, adulto, idoso), quizzes interativos, sistema de pontos e conquistas (EcoPontos), desafios comunitários e conteúdo sobre economia circular e catadores.</p>
+          <div class="module-features">
+            <div class="module-feature">Trilhas de aprendizagem por perfil etário e escolaridade</div>
+            <div class="module-feature">Quiz semanal com ranking comunitário e premiação simbólica</div>
+            <div class="module-feature">Desafios de redução (ex: "1 semana sem plástico")</div>
+            <div class="module-feature">Conteúdo sobre catadores e economia circular local</div>
+            <div class="module-feature">Certificado digital de participação (PDF via bot)</div>
+            <div class="module-feature">Integração curricular com escolas parceiras</div>
+          </div>
+        </div>
+      </div>
+      <div class="module-card reveal">
+        <div class="module-icon-wrap">📊</div>
+        <div>
+          <div class="module-num">Módulo 03</div>
+          <h3 class="module-name">EcoMapa — Painel de Dados Abertos</h3>
+          <p class="module-desc">Dashboard público com mapa de calor de denúncias, métricas de reciclagem por bairro, ranking de participação, histórico de ações da prefeitura e API aberta para jornalistas, pesquisadores e gestores públicos.</p>
+          <div class="module-features">
+            <div class="module-feature">Mapa interativo de pontos críticos de descarte irregular</div>
+            <div class="module-feature">Métricas de reciclagem e coleta seletiva por bairro</div>
+            <div class="module-feature">Ranking de bairros participantes e EcoPontos acumulados</div>
+            <div class="module-feature">Histórico de denúncias resolvidas x pendentes</div>
+            <div class="module-feature">API REST aberta para dados em tempo real</div>
+            <div class="module-feature">Relatórios mensais automáticos para gestores</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+    <div class="section-header reveal" style="margin-bottom:var(--space-6);">
+      <span class="label">Fluxo do Cidadão</span>
+      <h3 class="section-title" style="font-size:var(--text-lg);">Como funciona em 5 etapas</h3>
+    </div>
+    <div class="card card-elevated reveal" style="padding:0;overflow:hidden;">
+      <div class="flow-steps">
+        <div class="flow-step">
+          <div class="flow-num">1</div>
+          <div class="flow-title">Acesso</div>
+          <div class="flow-desc">Cidadão envia mensagem ou acessa via QR Code</div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num">2</div>
+          <div class="flow-title">Identificação</div>
+          <div class="flow-desc">Bot captura perfil e bairro para personalizar resposta</div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num">3</div>
+          <div class="flow-title">Interação</div>
+          <div class="flow-desc">Denúncia, consulta, microaula ou quiz são processados</div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num">4</div>
+          <div class="flow-title">Registro</div>
+          <div class="flow-desc">Dados são salvos no banco e publicados no EcoMapa</div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num">5</div>
+          <div class="flow-title">Retorno</div>
+          <div class="flow-desc">Cidadão recebe protocolo, EcoPontos e atualizações</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+    <div class="section-header reveal" style="margin-bottom:var(--space-6);">
+      <span class="label">Por que WhatsApp?</span>
+    </div>
+    <div class="wa-reasons reveal">
+      <div class="wa-reason">
+        <div class="wa-icon">📱</div>
+        <div class="wa-title">147 mi de brasileiros usam</div>
+        <div class="wa-desc">98% dos smartphones no Brasil têm o app instalado — zero barreira de adoção</div>
+      </div>
+      <div class="wa-reason">
+        <div class="wa-icon">💸</div>
+        <div class="wa-title">Zero custo para o cidadão</div>
+        <div class="wa-desc">Operadoras incluem WhatsApp em planos básicos — acesso mesmo sem internet plena</div>
+      </div>
+      <div class="wa-reason">
+        <div class="wa-icon">👴</div>
+        <div class="wa-title">Inclusão digital real</div>
+        <div class="wa-desc">Plataforma usada por idosos, pessoas sem letramento digital avançado e populações periféricas</div>
+      </div>
+      <div class="wa-reason">
+        <div class="wa-icon">📷</div>
+        <div class="wa-title">Fotos &amp; localização nativas</div>
+        <div class="wa-desc">Envio de foto e GPS por geolocalização do celular — sem instalar nada extra</div>
+      </div>
+      <div class="wa-reason">
+        <div class="wa-icon">🔔</div>
+        <div class="wa-title">Notificações ativas</div>
+        <div class="wa-desc">Bot pode enviar lembretes de coleta, atualização de denúncia e quizzes semanais</div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+    <div class="section-header reveal" style="margin-bottom:var(--space-6);">
+      <span class="label">Públicos-Alvo</span>
+    </div>
+    <div class="publics-grid reveal">
+      <div class="public-card">
+        <div class="public-icon">👧</div>
+        <div class="public-name">Crianças (6–12)</div>
+        <div class="public-desc">Microaulas lúdicas, quizzes com personagens animados, desafio "EcoHerói da Semana"</div>
+      </div>
+      <div class="public-card">
+        <div class="public-icon">🧑</div>
+        <div class="public-name">Jovens (13–25)</div>
+        <div class="public-desc">Gamificação, ranking, desafios viralizáveis, integração com projetos de extensão universitária</div>
+      </div>
+      <div class="public-card">
+        <div class="public-icon">👩</div>
+        <div class="public-name">Adultos (26–59)</div>
+        <div class="public-desc">Informações práticas de descarte, denúncia rápida, agendamento de coleta especial</div>
+      </div>
+      <div class="public-card">
+        <div class="public-icon">👴</div>
+        <div class="public-name">Idosos (60+)</div>
+        <div class="public-desc">Interface simplificada, linguagem acessível, localização de Ecopontos próximos</div>
+      </div>
+      <div class="public-card">
+        <div class="public-icon">🏢</div>
+        <div class="public-name">Gestores Públicos</div>
+        <div class="public-desc">Painel EcoMapa, relatórios automáticos, API para integração com sistemas municipais</div>
+      </div>
+      <div class="public-card">
+        <div class="public-icon">♻️</div>
+        <div class="public-name">Catadores</div>
+        <div class="public-desc">Informações de rotas otimizadas, integração com cooperativas, reconhecimento no sistema</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ARQUITETURA -->
+<section id="arquitetura" class="section" style="background:var(--color-surface);">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="label">04 — Arquitetura Técnica</span>
+      <h2 class="section-title">Stack 100% open-source · custo zero de software</h2>
+      <p class="section-subtitle">Todos os componentes da solução utilizam ferramentas gratuitas, open-source ou com planos free tier robustos para o contexto do projeto.</p>
+    </div>
+    <div class="arch-diagram reveal">
+      <div class="arch-flow">
+        <div class="arch-node">
+          <div class="arch-node-icon">👤</div>
+          <div class="arch-node-name">Cidadão</div>
+          <div class="arch-node-tech">WhatsApp</div>
+        </div>
+        <div class="arch-arrow">→</div>
+        <div class="arch-node">
+          <div class="arch-node-icon">🟢</div>
+          <div class="arch-node-name">WA Business API</div>
+          <div class="arch-node-tech">Meta Cloud</div>
+        </div>
+        <div class="arch-arrow">→</div>
+        <div class="arch-node">
+          <div class="arch-node-icon">⚡</div>
+          <div class="arch-node-name">Webhook/API</div>
+          <div class="arch-node-tech">n8n / Node.js</div>
+        </div>
+        <div class="arch-arrow">→</div>
+        <div class="arch-node">
+          <div class="arch-node-icon">🤖</div>
+          <div class="arch-node-name">Motor IA</div>
+          <div class="arch-node-tech">Gemini Pro / GPT-4o</div>
+        </div>
+        <div class="arch-arrow">→</div>
+        <div class="arch-node">
+          <div class="arch-node-icon">🗄️</div>
+          <div class="arch-node-name">Banco de Dados</div>
+          <div class="arch-node-tech">Supabase (PostgreSQL)</div>
+        </div>
+        <div class="arch-arrow">→</div>
+        <div class="arch-node">
+          <div class="arch-node-icon">🗺️</div>
+          <div class="arch-node-name">EcoMapa</div>
+          <div class="arch-node-tech">Metabase + Leaflet</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-header reveal" style="margin-bottom:var(--space-6);">
+      <span class="label">Frentes de IA</span>
+    </div>
+    <div class="ai-fronts reveal">
+      <div class="ai-front">
+        <div class="ai-front-icon">💬</div>
+        <div class="ai-front-name">NLU — Compreensão de Linguagem</div>
+        <div class="ai-front-desc">Identificação de intenção, extração de entidades (endereço, tipo de resíduo), suporte a variações regionais do português</div>
+        <div class="ai-front-tool"><span class="badge badge-green">Gemini Pro API</span></div>
+      </div>
+      <div class="ai-front">
+        <div class="ai-front-icon">📷</div>
+        <div class="ai-front-name">Visão Computacional</div>
+        <div class="ai-front-desc">Análise de fotos enviadas pelo cidadão para classificar tipo de resíduo, avaliar volume estimado e validar geolocalização do descarte</div>
+        <div class="ai-front-tool"><span class="badge badge-gold">GPT-4o Vision</span></div>
+      </div>
+      <div class="ai-front">
+        <div class="ai-front-icon">📊</div>
+        <div class="ai-front-name">Analytics Preditivo</div>
+        <div class="ai-front-desc">Identificação de padrões de descarte por bairro/dia/hora, predição de pontos críticos emergentes, otimização de rotas de coleta</div>
+        <div class="ai-front-tool"><span class="badge badge-blue">Python / Scikit-learn</span></div>
+      </div>
+    </div>
+
+    <div class="section-header reveal" style="margin-bottom:var(--space-6);">
+      <span class="label">Stack Completo</span>
+    </div>
+    <div class="card card-elevated reveal" style="padding:0;overflow:hidden;margin-bottom:var(--space-8);">
+      <table class="stack-table">
+        <thead>
+          <tr>
+            <th>Camada</th>
+            <th>Tecnologia</th>
+            <th>Função</th>
+            <th>Custo</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Interface</td><td>WhatsApp Business API</td><td>Canal de comunicação principal com cidadão</td><td class="cost-free">Gratuito (free tier)</td></tr>
+          <tr><td>Orquestração</td><td>n8n (self-hosted)</td><td>Automação de fluxos, integrações, webhooks</td><td class="cost-free">Open-source</td></tr>
+          <tr><td>IA — NLU</td><td>Google Gemini Pro</td><td>Compreensão de linguagem natural em PT-BR</td><td class="cost-free">Gratuito (free tier)</td></tr>
+          <tr><td>IA — Visão</td><td>GPT-4o Vision</td><td>Análise de fotos de descarte irregular</td><td>$0,01/foto aprox.</td></tr>
+          <tr><td>Backend</td><td>Supabase (PostgreSQL)</td><td>Banco de dados, autenticação, storage de fotos</td><td class="cost-free">Gratuito (free tier)</td></tr>
+          <tr><td>Geolocalização</td><td>OpenStreetMap + Leaflet</td><td>Mapas, Ecopontos, rotas de coleta</td><td class="cost-free">Open-source</td></tr>
+          <tr><td>Dashboard</td><td>Metabase Community</td><td>Painel de dados abertos para gestores e cidadãos</td><td class="cost-free">Open-source</td></tr>
+          <tr><td>Hospedagem</td><td>Google Cloud Run / Railway</td><td>Infraestrutura elástica de baixo custo</td><td>R$50–100/mês</td></tr>
+          <tr><td>Analytics</td><td>Python + Scikit-learn</td><td>Análise preditiva de pontos críticos</td><td class="cost-free">Open-source</td></tr>
+          <tr><td>Certificados</td><td>Google Workspace (UFMS)</td><td>E-mails institucionais e Google Drive</td><td class="cost-free">Gratuito (univ.)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section-header reveal" style="margin-bottom:var(--space-6);">
+      <span class="label">Governança de Dados &amp; Ética</span>
+    </div>
+    <div class="ethics-grid reveal">
+      <div class="ethics-item">
+        <div class="ethics-icon">🔒</div>
+        <div>
+          <div class="ethics-title">LGPD — Lei Geral de Proteção de Dados</div>
+          <div class="ethics-desc">Dados pessoais tratados com base em consentimento expresso. Anonimização automática de fotos para remoção de rostos. Política de retenção: dados excluídos após 24 meses ou a pedido do cidadão.</div>
+        </div>
+      </div>
+      <div class="ethics-item">
+        <div class="ethics-icon">🌐</div>
+        <div>
+          <div class="ethics-title">Dados Abertos por Padrão</div>
+          <div class="ethics-desc">Todos os dados agregados de denúncias e reciclagem são publicados como open data no EcoMapa. API REST documentada em padrão OpenAPI 3.0. Seguindo diretrizes da INDA e do Portal Dados Abertos do Brasil.</div>
+        </div>
+      </div>
+      <div class="ethics-item">
+        <div class="ethics-icon">🤝</div>
+        <div>
+          <div class="ethics-title">Autonomia Cidadã</div>
+          <div class="ethics-desc">Cidadão pode solicitar exclusão de dados a qualquer momento via chatbot. Sem perfil comportamental comercial. Dados usados exclusivamente para melhoria da gestão de resíduos e educação ambiental.</div>
+        </div>
+      </div>
+      <div class="ethics-item">
+        <div class="ethics-icon">⚖️</div>
+        <div>
+          <div class="ethics-title">Transparência Algorítmica</div>
+          <div class="ethics-desc">Lógica de classificação de resíduos e priorização de denúncias documentada publicamente. Código-fonte disponível no GitHub da UFMS. Auditoria semestral por comitê de ética da universidade.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- METODOLOGIA -->
+<section id="metodologia" class="section">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="label">05 — Metodologia</span>
+      <h2 class="section-title">Abordagem interdisciplinar</h2>
+      <p class="section-subtitle">O EcoBot UFMS integra Design Thinking, Desenvolvimento Ágil (Scrum) e Ciência Cidadã para garantir que a solução seja construída com — e não apenas para — a comunidade.</p>
+    </div>
+    <div class="method-table reveal">
+      <div class="method-row">
+        <div class="method-area">Design Thinking</div>
+        <div class="method-app">Fase de imersão com cidadãos, garis, catadores e gestores da SEMADUR para mapeamento de jornadas e dores reais. Prototipagem rápida em papel antes do desenvolvimento digital.</div>
+      </div>
+      <div class="method-row">
+        <div class="method-area">Scrum (Ágil)</div>
+        <div class="method-app">Sprints de 2 semanas com entrega incremental de funcionalidades. Backlog gerenciado no Trello. Retrospectivas mensais com representantes da comunidade como Product Owners honorários.</div>
+      </div>
+      <div class="method-row">
+        <div class="method-area">Ciência Cidadã</div>
+        <div class="method-app">Moradores como coletores de dados ambientais. Validação de pontos críticos via denúncias georreferenciadas. Protocolo de ciência cidadã baseado nas diretrizes do GBIF e European Citizen Science Association.</div>
+      </div>
+      <div class="method-row">
+        <div class="method-area">Extensão Universitária</div>
+        <div class="method-app">Projeto vinculado ao Programa de Extensão da UFMS. Alunos de Ciência da Computação, Engenharia Ambiental, Direito e Pedagogia integram equipes multidisciplinares com carga horária de extensão reconhecida.</div>
+      </div>
+      <div class="method-row">
+        <div class="method-area">Governança Participativa</div>
+        <div class="method-app">Comitê de Acompanhamento com representantes de associações de moradores, catadores, SEMADUR e Secretaria de Educação. Reuniões trimestrais abertas e atas publicadas no site do projeto.</div>
+      </div>
+      <div class="method-row">
+        <div class="method-area">Avaliação de Impacto</div>
+        <div class="method-app">Teoria da Mudança (ToC) documentada. Indicadores de resultado baseados em ODS 4, 11, 12 e 13. Relatório semestral de impacto publicado abertamente seguindo o padrão Social Return on Investment (SROI).</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PILOTO -->
+<section id="piloto" class="section" style="background:var(--color-surface);">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="label">06 — Plano de Piloto (6 meses)</span>
+      <h2 class="section-title">Cronograma de implementação</h2>
+      <p class="section-subtitle">Piloto estruturado em três fases com entregáveis claros, métricas de sucesso definidas e custo total de R$2.000.</p>
+    </div>
+    <div class="pilot-timeline reveal">
+      <div class="pilot-phase">
+        <div>
+          <div class="pilot-period">Meses 1–2</div>
+          <div class="pilot-period" style="color:var(--color-text-muted);text-transform:none;font-size:var(--text-xs);margin-top:4px;">Infraestrutura</div>
+        </div>
+        <div>
+          <div class="pilot-phase-name">Fase 1 — Construção e Integração</div>
+          <div class="pilot-deliverables">
+            ✓ Desenvolvimento do chatbot base (fluxos de denúncia e consulta)<br>
+            ✓ Integração com WhatsApp Business API (Meta for Developers)<br>
+            ✓ Configuração do banco de dados (Supabase) e geolocalização<br>
+            ✓ Criação do painel EcoMapa (Metabase + Leaflet)<br>
+            ✓ Cadastro das primeiras 300 famílias via parceria com associações<br>
+            ✓ Workshop de formação com 20 agentes comunitários
+          </div>
+        </div>
+      </div>
+      <div class="pilot-phase">
+        <div>
+          <div class="pilot-period">Meses 3–4</div>
+          <div class="pilot-period" style="color:var(--color-text-muted);text-transform:none;font-size:var(--text-xs);margin-top:4px;">Ativação</div>
+        </div>
+        <div>
+          <div class="pilot-phase-name">Fase 2 — Lançamento e Engajamento</div>
+          <div class="pilot-deliverables">
+            ✓ Lançamento público com evento comunitário nos 6 bairros<br>
+            ✓ Ativação do módulo EcoAprende com 1ª trilha de microaulas<br>
+            ✓ Início do quiz semanal e sistema de EcoPontos<br>
+            ✓ Publicação dos primeiros dados abertos no EcoMapa<br>
+            ✓ Meta intermediária: 1.500 cadastros e 200 denúncias registradas<br>
+            ✓ Relatório parcial para SEMADUR e parceiros
+          </div>
+        </div>
+      </div>
+      <div class="pilot-phase">
+        <div>
+          <div class="pilot-period">Meses 5–6</div>
+          <div class="pilot-period" style="color:var(--color-text-muted);text-transform:none;font-size:var(--text-xs);margin-top:4px;">Avaliação</div>
+        </div>
+        <div>
+          <div class="pilot-phase-name">Fase 3 — Consolidação e Avaliação</div>
+          <div class="pilot-deliverables">
+            ✓ Análise preditiva de pontos críticos com dados do piloto<br>
+            ✓ Ajustes de UX baseados em feedback dos cidadãos<br>
+            ✓ Relatório de impacto (SROI, métricas ODS)<br>
+            ✓ Apresentação pública para prefeitura e comunidade<br>
+            ✓ Documentação técnica para replicação em outros municípios<br>
+            ✓ Plano de sustentabilidade para continuidade pós-piloto
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+    <div class="section-header reveal" style="margin-bottom:var(--space-6);">
+      <span class="label">Métricas de Sucesso (6 meses)</span>
+    </div>
+    <div class="metrics-grid reveal">
+      <div class="metric-card">
+        <div class="metric-target">3.000</div>
+        <div class="metric-name">Cidadãos cadastrados</div>
+        <div class="metric-how">Via WhatsApp nos 6 bairros</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-target">500</div>
+        <div class="metric-name">Denúncias registradas</div>
+        <div class="metric-how">Com geolocalização e foto</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-target">1.500</div>
+        <div class="metric-name">Alunos do EcoAprende</div>
+        <div class="metric-how">Microaulas completadas</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-target">8.000</div>
+        <div class="metric-name">Microaulas entregues</div>
+        <div class="metric-how">Conteúdo adaptado por perfil</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-target">70%</div>
+        <div class="metric-name">Denúncias resolvidas</div>
+        <div class="metric-how">Atendimento pela SEMADUR</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-target">20%</div>
+        <div class="metric-name">Redução de pontos críticos</div>
+        <div class="metric-how">Nos 6 bairros do piloto</div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+    <div class="section-header reveal" style="margin-bottom:var(--space-6);">
+      <span class="label">Orçamento do Piloto</span>
+    </div>
+    <div class="card card-elevated reveal" style="padding:0;overflow:hidden;margin-bottom:var(--space-8);">
+      <table class="budget-table">
+        <thead>
+          <tr><th>Item</th><th>Justificativa</th><th style="text-align:right;">Valor</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Hospedagem (Railway/Cloud Run)</td>
+            <td>6 meses de servidor para bot e banco de dados</td>
+            <td class="budget-value">R$ 600,00</td>
+          </tr>
+          <tr>
+            <td>Domínio + SSL</td>
+            <td>ecobot.ufms.br ou similar</td>
+            <td class="budget-value">R$ 80,00</td>
+          </tr>
+          <tr>
+            <td>IA — Visão Computacional (fotos)</td>
+            <td>500 fotos × R$ 0,06 (GPT-4o Vision)</td>
+            <td class="budget-value">R$ 30,00</td>
+          </tr>
+          <tr>
+            <td>Materiais de divulgação</td>
+            <td>Impressão de QR Codes e folders para os 6 bairros</td>
+            <td class="budget-value">R$ 300,00</td>
+          </tr>
+          <tr>
+            <td>Premiações simbólicas (EcoPontos)</td>
+            <td>Vouchers de mudas, kit reciclagem, canecas ECO</td>
+            <td class="budget-value">R$ 500,00</td>
+          </tr>
+          <tr>
+            <td>Workshops e formações</td>
+            <td>2 oficinas presenciais com agentes comunitários</td>
+            <td class="budget-value">R$ 490,00</td>
+          </tr>
+          <tr>
+            <td style="font-weight:700;">TOTAL</td>
+            <td style="font-weight:700;">Custo total do piloto de 6 meses</td>
+            <td class="budget-value" style="font-size:var(--text-lg);">R$ 2.000,00</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section-header reveal" style="margin-bottom:var(--space-6);">
+      <span class="label">Parceiros Estratégicos</span>
+    </div>
+    <div class="partners-grid reveal">
+      <div class="partner-card">
+        <div class="partner-icon">🏛️</div>
+        <div class="partner-name">UFMS</div>
+        <div class="partner-role">Âncora institucional, extensão universitária, laboratórios</div>
+      </div>
+      <div class="partner-card">
+        <div class="partner-icon">🌿</div>
+        <div class="partner-name">SEMADUR</div>
+        <div class="partner-role">Dados de coleta, Ecopontos, integração operacional</div>
+      </div>
+      <div class="partner-card">
+        <div class="partner-icon">🏘️</div>
+        <div class="partner-name">Assoc. de Moradores</div>
+        <div class="partner-role">Mobilização comunitária, agentes de campo</div>
+      </div>
+      <div class="partner-card">
+        <div class="partner-icon">🏫</div>
+        <div class="partner-name">Escolas Estaduais</div>
+        <div class="partner-role">EcoAprende em sala de aula, educação infantil e juvenil</div>
+      </div>
+      <div class="partner-card">
+        <div class="partner-icon">♻️</div>
+        <div class="partner-name">Cooperativas de Catadores</div>
+        <div class="partner-role">Dados de reciclagem, integração de rotas, valorização do trabalho</div>
+      </div>
+      <div class="partner-card">
+        <div class="partner-icon">🏢</div>
+        <div class="partner-name">FIEMS / SENAI-MS</div>
+        <div class="partner-role">Potencial patrocinador técnico, agenda ESG corporativa</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- IMPACTO / ODS -->
+<section id="impacto" class="section">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="label">07 — Impacto &amp; ODS</span>
+      <h2 class="section-title">Alinhamento com a Agenda 2030</h2>
+      <p class="section-subtitle">O EcoBot UFMS contribui diretamente com quatro Objetivos de Desenvolvimento Sustentável da ONU, com indicadores mensuráveis de curto, médio e longo prazo.</p>
+    </div>
+    <div class="ods-grid reveal">
+      <div class="ods-card ods-4">
+        <div class="ods-num">4</div>
+        <div class="ods-label">ODS 4</div>
+        <div class="ods-title">Educação de Qualidade</div>
+        <div class="ods-desc">Microaulas adaptadas por perfil etário, integração curricular com escolas parceiras, formação de agentes comunitários em educação ambiental. Meta: 1.500 alunos em 6 meses.</div>
+      </div>
+      <div class="ods-card ods-11">
+        <div class="ods-num">11</div>
+        <div class="ods-label">ODS 11</div>
+        <div class="ods-title">Cidades e Comunidades Sustentáveis</div>
+        <div class="ods-desc">Mapeamento cidadão de pontos críticos, dados abertos para planejamento urbano, integração com SEMADUR. Meta: 20% de redução de descarte irregular nos 6 bairros em 6 meses.</div>
+      </div>
+      <div class="ods-card ods-12">
+        <div class="ods-num">12</div>
+        <div class="ods-label">ODS 12</div>
+        <div class="ods-title">Consumo e Produção Responsáveis</div>
+        <div class="ods-desc">Gamificação de práticas de redução e reciclagem, desafios comunitários (ex: "1 semana sem plástico"), valorização do trabalho das cooperativas de catadores.</div>
+      </div>
+      <div class="ods-card ods-13">
+        <div class="ods-num">13</div>
+        <div class="ods-label">ODS 13</div>
+        <div class="ods-title">Ação Contra a Mudança Climática</div>
+        <div class="ods-desc">Cada tonelada de resíduo orgânico desviada de aterros evita emissão de ~0,8 tCO₂eq. Painel EcoMapa publica carbono evitado pelo bairro em tempo real.</div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+    <div class="section-header reveal" style="margin-bottom:var(--space-6);">
+      <span class="label">Impactos Qualitativos</span>
+    </div>
+    <div class="impact-qual reveal">
+      <div class="iq-card">
+        <div class="iq-icon">🤝</div>
+        <div class="iq-title">Inclusão Digital com Propósito</div>
+        <div class="iq-desc">Cidadãos sem letramento digital avançado ganham acesso a serviços públicos via WhatsApp. O bot utiliza linguagem simples, sem jargão técnico, com suporte a áudio para usuários com baixa alfabetização.</div>
+      </div>
+      <div class="iq-card">
+        <div class="iq-icon">🏙️</div>
+        <div class="iq-title">Transparência e Accountability Municipal</div>
+        <div class="iq-desc">EcoMapa expõe publicamente dados de denúncias resolvidas e pendentes, criando pressão cidadã saudável para a SEMADUR. Gestores têm incentivo institucional para fechar pendências antes do relatório mensal.</div>
+      </div>
+      <div class="iq-card">
+        <div class="iq-icon">♻️</div>
+        <div class="iq-title">Valorização das Cooperativas de Catadores</div>
+        <div class="iq-desc">Catadores são reconhecidos como agentes ambientais no sistema, com rotas otimizadas e visibilidade pública. Dados de tonelagem coletada por cooperativa são publicados no EcoMapa.</div>
+      </div>
+      <div class="iq-card">
+        <div class="iq-icon">🔬</div>
+        <div class="iq-title">Dados para Pesquisa e Políticas Públicas</div>
+        <div class="iq-desc">Base de dados georreferenciada e longitudinal sobre resíduos sólidos disponível para pesquisadores da UFMS, gestores e jornalistas. Potencial para teses, artigos e políticas baseadas em evidências.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ROADMAP -->
+<section id="roadmap" class="section" style="background:var(--color-surface);">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="label">08 — Roadmap</span>
+      <h2 class="section-title">Evolução após o piloto</h2>
+      <p class="section-subtitle">Visão de crescimento progressivo: de 6 bairros de Campo Grande para outros municípios do MS e, eventualmente, plataforma nacional open-source.</p>
+    </div>
+    <div class="roadmap-steps reveal">
+      <div class="roadmap-item">
+        <div class="roadmap-date">Mês 1–6</div>
+        <div class="roadmap-line"><div class="roadmap-dot"></div><div class="roadmap-connector"></div></div>
+        <div>
+          <div class="roadmap-title">Piloto — 6 Bairros, Campo Grande</div>
+          <div class="roadmap-desc">Implementação completa dos 3 módulos. Validação de hipóteses. 3.000 cidadãos cadastrados. Relatório de impacto.</div>
+        </div>
+      </div>
+      <div class="roadmap-item">
+        <div class="roadmap-date">Mês 7–12</div>
+        <div class="roadmap-line"><div class="roadmap-dot"></div><div class="roadmap-connector"></div></div>
+        <div>
+          <div class="roadmap-title">Expansão Municipal — Campo Grande completo</div>
+          <div class="roadmap-desc">Integração com todos os bairros da cidade. Parceria formal com SEMADUR. Integração com sistema de ouvidoria municipal (OUV-MS). API conectada ao Portal Dados Abertos do MS.</div>
+        </div>
+      </div>
+      <div class="roadmap-item">
+        <div class="roadmap-date">Ano 2</div>
+        <div class="roadmap-line"><div class="roadmap-dot"></div><div class="roadmap-connector"></div></div>
+        <div>
+          <div class="roadmap-title">MS-Eco — Rede Estadual de Municípios</div>
+          <div class="roadmap-desc">Replicação em Dourados, Três Lagoas, Corumbá e Ponta Porã. Consórcio intermunicipal de dados. Módulo de comparação de desempenho entre municípios.</div>
+        </div>
+      </div>
+      <div class="roadmap-item">
+        <div class="roadmap-date">Ano 3</div>
+        <div class="roadmap-line"><div class="roadmap-dot"></div><div class="roadmap-connector"></div></div>
+        <div>
+          <div class="roadmap-title">Plataforma Nacional Open-Source</div>
+          <div class="roadmap-desc">Publicação do código completo no GitHub. Documentação para replicação autônoma. Parcerias com UFMT, UFGD, UEMS e outras universidades federais. Candidatura a edital FINEP/MCTIC.</div>
+        </div>
+      </div>
+      <div class="roadmap-item">
+        <div class="roadmap-date">Ano 4+</div>
+        <div class="roadmap-line"><div class="roadmap-dot"></div><div class="roadmap-connector"></div></div>
+        <div>
+          <div class="roadmap-title">Sustentabilidade Financeira</div>
+          <div class="roadmap-desc">Modelo SaaS municipal (assinatura por cidade). Fundo de impacto social. Créditos de carbono por tonelada de resíduo desviado de aterro. Autofinanciamento estimado em 18 meses.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RISCOS -->
+<section id="riscos" class="section">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="label">09 — Gestão de Riscos</span>
+      <h2 class="section-title">Riscos identificados &amp; mitigações</h2>
+      <p class="section-subtitle">Análise honesta dos principais riscos e estratégias de contingência para cada um deles.</p>
+    </div>
+    <div class="risks-table reveal">
+      <div class="risk-item">
+        <div>
+          <div class="risk-name">Baixa Adesão Cidadã</div>
+          <div class="risk-mitigation">Risco: cidadãos não utilizarem o bot por desconhecimento ou desconfiança.<br><strong>Mitigação:</strong> Campanha de divulgação porta-a-porta via agentes comunitários. Parceria com líderes comunitários como "campeões locais". QR Codes em pontos de alto fluxo (feiras, mercados, UBSs). Primeiros 500 cadastros via evento de lançamento presencial.</div>
+        </div>
+        <div class="risk-badges">
+          <span class="badge badge-orange">Probabilidade: Média</span>
+          <span class="badge badge-gold">Impacto: Alto</span>
+        </div>
+      </div>
+      <div class="risk-item">
+        <div>
+          <div class="risk-name">Falta de Resposta da SEMADUR</div>
+          <div class="risk-mitigation">Risco: prefeitura não atender denúncias registradas no bot, gerando frustração cidadã.<br><strong>Mitigação:</strong> Protocolo de SLA definido antes do lançamento (prazo de 10 dias úteis). EcoMapa publica publicamente o percentual de resoluções — accountability automático. Escalada para Ouvidoria Municipal em caso de não resposta.</div>
+        </div>
+        <div class="risk-badges">
+          <span class="badge badge-blue">Probabilidade: Baixa</span>
+          <span class="badge badge-gold">Impacto: Alto</span>
+        </div>
+      </div>
+      <div class="risk-item">
+        <div>
+          <div class="risk-name">Problemas Técnicos de Integração</div>
+          <div class="risk-mitigation">Risco: falhas na API do WhatsApp Business, quedas de servidor, bugs no fluxo do bot.<br><strong>Mitigação:</strong> Arquitetura com fallback para atendimento por e-mail e formulário web. Monitoramento 24/7 com alertas automáticos (UptimeRobot). Equipe técnica de plantão nos primeiros 30 dias de lançamento.</div>
+        </div>
+        <div class="risk-badges">
+          <span class="badge badge-blue">Probabilidade: Baixa</span>
+          <span class="badge badge-blue">Impacto: Médio</span>
+        </div>
+      </div>
+      <div class="risk-item">
+        <div>
+          <div class="risk-name">Saída de Membros da Equipe</div>
+          <div class="risk-mitigation">Risco: estudantes saírem da equipe por formatura, mudança de cidade ou outros projetos.<br><strong>Mitigação:</strong> Documentação completa de todos os processos e código. Redundância: cada função tem ao menos dois membros capacitados. Programa de "onboarding" de novos voluntários em parceria com os cursos de TI da UFMS.</div>
+        </div>
+        <div class="risk-badges">
+          <span class="badge badge-orange">Probabilidade: Média</span>
+          <span class="badge badge-blue">Impacto: Médio</span>
+        </div>
+      </div>
+      <div class="risk-item">
+        <div>
+          <div class="risk-name">Privacidade e Uso Indevido de Dados</div>
+          <div class="risk-mitigation">Risco: dados de localização ou fotos serem usados indevidamente ou sofrerem violação.<br><strong>Mitigação:</strong> LGPD como pilar do projeto desde o design. Anonimização automática de rostos em fotos. Criptografia end-to-end no armazenamento. DPO a ser designado com orientador(a) da UFMS. Auditoria semestral por comitê de ética da UFMS.</div>
+        </div>
+        <div class="risk-badges">
+          <span class="badge badge-blue">Probabilidade: Baixa</span>
+          <span class="badge badge-gold">Impacto: Alto</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- EQUIPE -->
+<section id="equipe" class="section">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="label">10 — Equipe</span>
+      <h2 class="section-title">Lean Cidadão — 5 integrantes</h2>
+      <p class="section-subtitle">Equipe multidisciplinar de estudantes da UFMS com perfis complementares em tecnologia, comunicação, direito e gestão ambiental.</p>
+    </div>
+    <div class="team-grid reveal">
+      <div class="team-card team-leader">
+        <div class="team-avatar">TAV</div>
+        <div class="team-name">Travis Aurélio Volpa</div>
+        <div class="team-rga">&nbsp;</div>
+        <div class="team-role">Líder de Projeto · Coordenação geral, arquitetura da solução, gestão do piloto</div>
+        <span class="badge badge-green">Líder</span>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar">BY</div>
+        <div class="team-name">Bruno Ye</div>
+        <div class="team-rga">&nbsp;</div>
+        <div class="team-role">Tech Lead · Desenvolvimento do chatbot, integrações WhatsApp API, backend</div>
+        <span class="badge badge-blue">Tech</span>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar">SFR</div>
+        <div class="team-name">Stella Fernanda Leite Ruiz</div>
+        <div class="team-rga">&nbsp;</div>
+        <div class="team-role">Design &amp; UX · Interface do chatbot, fluxos de conversa, material visual</div>
+        <span class="badge badge-gold">Design</span>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar">VSR</div>
+        <div class="team-name">Valentina Selini Rocha de Oliveira</div>
+        <div class="team-rga">&nbsp;</div>
+        <div class="team-role">Dados &amp; Impacto · EcoMapa, analytics, relatórios ODS, SROI</div>
+        <span class="badge badge-orange">Dados</span>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar">MFS</div>
+        <div class="team-name">Maria Fernanda Saad Rente</div>
+        <div class="team-rga">&nbsp;</div>
+        <div class="team-role">Comunidade &amp; Parcerias · Mobilização social, relacionamento com SEMADUR e catadores</div>
+        <span class="badge badge-green">Social</span>
+      </div>
+    </div>
+    <div class="card reveal" style="margin-top:var(--space-6);text-align:center;">
+      <p style="font-size:var(--text-sm);color:var(--color-text-muted);">🔍 <strong style="color:var(--color-text);">Orientação acadêmica:</strong> Em processo de seleção de professor(a) orientador(a) — UFMS</p>
+    </div>
+  </div>
+</section>
+
+<!-- REPLICAÇÃO -->
+<section id="replicacao" class="section" style="background:var(--color-surface);">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="label">11 — Potencial de Replicação</span>
+      <h2 class="section-title">Por que o EcoBot pode escalar</h2>
+      <p class="section-subtitle">Arquitetura modular, código open-source e metodologia documentada permitem replicação em qualquer município do Brasil sem dependência da equipe original.</p>
+    </div>
+    <div class="replica-grid reveal">
+      <div class="replica-card">
+        <div class="replica-icon">🔧</div>
+        <div class="replica-title">Arquitetura Modular</div>
+        <div class="replica-desc">Cada módulo (Canal, EcoAprende, EcoMapa) pode ser implantado de forma independente. Município pode começar apenas com o canal de denúncias e adicionar educação ambiental depois.</div>
+      </div>
+      <div class="replica-card">
+        <div class="replica-icon">💰</div>
+        <div class="replica-title">Custo de Replicação Acessível</div>
+        <div class="replica-desc">R$2.000 para o piloto. Custo marginal de expansão estimado em R$800/mês por município. Possibilidade de consórcio intermunicipal para diluir custos de infraestrutura.</div>
+      </div>
+      <div class="replica-card">
+        <div class="replica-icon">📚</div>
+        <div class="replica-title">Documentação Completa</div>
+        <div class="replica-desc">Playbook de implementação, documentação técnica em GitHub, vídeos de formação e suporte da UFMS para os primeiros municípios replicadores.</div>
+      </div>
+    </div>
+    <div class="card reveal" style="margin-top:var(--space-6);background:var(--color-primary-subtle);border-color:var(--color-primary);">
+      <p style="font-size:var(--text-sm);text-align:center;">🌍 <strong>Municípios prioritários para replicação:</strong> Dourados/MS · Três Lagoas/MS · Corumbá/MS · Ponta Porã/MS · Cuiabá/MT · Brasília/DF (Projeto-Piloto Nacional)</p>
+    </div>
+  </div>
+</section>
+
+<!-- DEMO CHATBOT -->
+<section id="demo" class="chatbot-section section">
+  <div class="container-wide">
+    <div class="section-header reveal">
+      <span class="label">12 — Demo Interativo</span>
+      <h2 class="section-title">Experimente o EcoBot</h2>
+      <p class="section-subtitle">Selecione um cenário e veja como o chatbot responde no WhatsApp. Esta é uma simulação do fluxo real de conversa.</p>
+    </div>
+    <div class="chatbot-container reveal">
+      <div class="chat-phone">
+        <div class="chat-header">
+          <div class="chat-avatar">🌱</div>
+          <div class="chat-info">
+            <div class="name">EcoBot UFMS</div>
+            <div class="status">🟢 Online agora</div>
+          </div>
+        </div>
+        <div class="chat-messages" id="chatMessages">
+          <div class="chat-msg bot">
+            Olá! 🌿 Sou o <strong>EcoBot UFMS</strong>, seu assistente de resíduos sólidos em Campo Grande.<br><br>
+            Como posso ajudar você hoje?<br>
+            <br>
+            📢 Denunciar descarte irregular<br>
+            🗺️ Encontrar Ecoponto próximo<br>
+            📚 Aprender sobre reciclagem<br>
+            🏆 Meu progresso (EcoPontos)
+            <div class="chat-time">Agora</div>
+          </div>
+        </div>
+        <div class="chat-input-bar">
+          <input class="chat-input" type="text" placeholder="Digite uma mensagem..." id="chatInput">
+          <button class="chat-send" onclick="sendCustomMsg()" aria-label="Enviar mensagem">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M2 21l21-9L2 3v7l15 2-15 2z"/></svg>
+          </button>
+        </div>
+      </div>
+      <div>
+        <p class="label" style="margin-bottom:var(--space-4);display:block;">Escolha um cenário:</p>
+        <div class="chat-scenarios">
+          <button class="scenario-btn" onclick="runScenario('denuncia')">
+            <div class="scenario-icon">📢</div>
+            <div class="scenario-title">Denúncia de Descarte Irregular</div>
+            <div class="scenario-desc">Cidadão registra lixo jogado em via pública com foto e localização</div>
+          </button>
+          <button class="scenario-btn" onclick="runScenario('microaula')">
+            <div class="scenario-icon">🎓</div>
+            <div class="scenario-title">EcoAprende — Microaula Adulto</div>
+            <div class="scenario-desc">Aprender sobre separação de resíduos e reciclagem em 5 minutos</div>
+          </button>
+          <button class="scenario-btn" onclick="runScenario('quiz')">
+            <div class="scenario-icon">🏆</div>
+            <div class="scenario-title">Quiz Gamificado</div>
+            <div class="scenario-desc">Responder perguntas sobre reciclagem e ganhar EcoPontos</div>
+          </button>
+          <button class="scenario-btn" onclick="runScenario('ecoponto')">
+            <div class="scenario-icon">🗺️</div>
+            <div class="scenario-title">Localizar Ecoponto</div>
+            <div class="scenario-desc">Encontrar o ponto de coleta seletiva mais próximo com horários</div>
+          </button>
+          <button class="scenario-btn" onclick="runScenario('crianca')">
+            <div class="scenario-icon">👧</div>
+            <div class="scenario-title">Modo Criança — EcoHerói</div>
+            <div class="scenario-desc">Microaula lúdica adaptada para crianças de 6 a 12 anos</div>
+          </button>
+          <button class="scenario-btn" onclick="runScenario('progresso')">
+            <div class="scenario-icon">⭐</div>
+            <div class="scenario-title">Meu Progresso (EcoPontos)</div>
+            <div class="scenario-desc">Ver ranking, conquistas e histórico de participação</div>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DASHBOARD -->
+<section id="dashboard" class="section">
+  <div class="container-wide">
+    <div class="section-header reveal">
+      <span class="label">13 — Painel Cidadão (EcoMapa)</span>
+      <h2 class="section-title">Dados abertos em tempo real</h2>
+      <p class="section-subtitle">Simulação do painel público de monitoramento com dados do piloto. Todos os números são abertos e acessíveis por qualquer cidadão.</p>
+    </div>
+    <div class="dashboard-demo reveal">
+      <div class="dash-header">
+        <div class="dash-title">📊 EcoMapa — Painel de Resíduos Sólidos · Campo Grande/MS</div>
+        <div class="live-badge"><div class="live-dot"></div> Dados ao vivo</div>
+      </div>
+      <div class="dash-kpis">
+        <div class="dash-kpi">
+          <div class="dash-kpi-val" id="kpi1">0</div>
+          <div class="dash-kpi-label">Cidadãos cadastrados</div>
+          <div class="dash-kpi-delta">▲ +12% esta semana</div>
+        </div>
+        <div class="dash-kpi">
+          <div class="dash-kpi-val" id="kpi2">0</div>
+          <div class="dash-kpi-label">Denúncias registradas</div>
+          <div class="dash-kpi-delta">▲ 68% resolvidas</div>
+        </div>
+        <div class="dash-kpi">
+          <div class="dash-kpi-val" id="kpi3">0</div>
+          <div class="dash-kpi-label">Microaulas entregues</div>
+          <div class="dash-kpi-delta">▲ +340 esta semana</div>
+        </div>
+        <div class="dash-kpi">
+          <div class="dash-kpi-val" id="kpi4">0</div>
+          <div class="dash-kpi-label">EcoPontos distribuídos</div>
+          <div class="dash-kpi-delta">▲ +2.100 este mês</div>
+        </div>
+      </div>
+      <div class="dash-body">
+        <div class="dash-chart-area">
+          <div class="dash-chart-title">Denúncias por Categoria de Resíduo</div>
+          <div class="bar-chart">
+            <div class="bar-row">
+              <div class="bar-label">Orgânico</div>
+              <div class="bar-track"><div class="bar-fill" data-width="78"></div></div>
+              <div class="bar-val">78%</div>
+            </div>
+            <div class="bar-row">
+              <div class="bar-label">Entulho</div>
+              <div class="bar-track"><div class="bar-fill" data-width="62" style="background:var(--color-gold);"></div></div>
+              <div class="bar-val">62%</div>
+            </div>
+            <div class="bar-row">
+              <div class="bar-label">Plástico</div>
+              <div class="bar-track"><div class="bar-fill" data-width="54" style="background:var(--color-blue);"></div></div>
+              <div class="bar-val">54%</div>
+            </div>
+            <div class="bar-row">
+              <div class="bar-label">Eletrônicos</div>
+              <div class="bar-track"><div class="bar-fill" data-width="31" style="background:var(--color-orange);"></div></div>
+              <div class="bar-val">31%</div>
+            </div>
+            <div class="bar-row">
+              <div class="bar-label">Outros</div>
+              <div class="bar-track"><div class="bar-fill" data-width="19" style="background:var(--color-text-faint);"></div></div>
+              <div class="bar-val">19%</div>
+            </div>
+          </div>
+          <div style="margin-top:var(--space-6);">
+            <div class="dash-chart-title">Ranking de Bairros — Participação</div>
+            <div class="bar-chart" style="margin-top:var(--space-3);">
+              <div class="bar-row">
+                <div class="bar-label">Tiradentes</div>
+                <div class="bar-track"><div class="bar-fill" data-width="92"></div></div>
+                <div class="bar-val">🥇 92</div>
+              </div>
+              <div class="bar-row">
+                <div class="bar-label">Cor. Antonino</div>
+                <div class="bar-track"><div class="bar-fill" data-width="76"></div></div>
+                <div class="bar-val">🥈 76</div>
+              </div>
+              <div class="bar-row">
+                <div class="bar-label">Nova Lima</div>
+                <div class="bar-track"><div class="bar-fill" data-width="68"></div></div>
+                <div class="bar-val">🥉 68</div>
+              </div>
+              <div class="bar-row">
+                <div class="bar-label">Jd. Aeroporto</div>
+                <div class="bar-track"><div class="bar-fill" data-width="55"></div></div>
+                <div class="bar-val">55</div>
+              </div>
+              <div class="bar-row">
+                <div class="bar-label">Aero Rancho</div>
+                <div class="bar-track"><div class="bar-fill" data-width="43"></div></div>
+                <div class="bar-val">43</div>
+              </div>
+              <div class="bar-row">
+                <div class="bar-label">Sto. Antônio</div>
+                <div class="bar-track"><div class="bar-fill" data-width="38"></div></div>
+                <div class="bar-val">38</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="dash-map-area">
+          <div class="dash-chart-title">Mapa de Calor — Pontos Críticos (Campo Grande/MS)</div>
+          <div class="heatmap" id="heatmap">
+            <div class="heatmap-label">CAMPO GRANDE · MS</div>
+          </div>
+          <div style="margin-top:var(--space-4);">
+            <div class="dash-chart-title" style="margin-bottom:var(--space-3);">Carbono evitado (estimado)</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-3);">
+              <div style="text-align:center;padding:var(--space-3);background:var(--color-surface);border-radius:var(--radius-lg);border:1px solid var(--color-border);">
+                <div style="font-size:var(--text-lg);font-weight:700;color:var(--color-primary);">12,4 t</div>
+                <div style="font-size:var(--text-xs);color:var(--color-text-muted);">CO₂eq evitado</div>
+              </div>
+              <div style="text-align:center;padding:var(--space-3);background:var(--color-surface);border-radius:var(--radius-lg);border:1px solid var(--color-border);">
+                <div style="font-size:var(--text-lg);font-weight:700;color:var(--color-primary);">15,5 t</div>
+                <div style="font-size:var(--text-xs);color:var(--color-text-muted);">Resíduos desviados</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REFERÊNCIAS -->
+<section id="referencias" class="section-sm" style="background:var(--color-surface);">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="label">14 — Referências</span>
+      <h2 class="section-title">Fontes e embasamento</h2>
+    </div>
+    <div class="refs-list reveal">
+      <div class="ref-item"><strong>IBGE (2022).</strong> Pesquisa Nacional de Saneamento Básico (PNSB). Instituto Brasileiro de Geografia e Estatística. Disponível em: ibge.gov.br/pnsb</div>
+      <div class="ref-item"><strong>SNIS (2022).</strong> Sistema Nacional de Informações sobre Saneamento — Diagnóstico de Resíduos Sólidos Urbanos. Ministério do Desenvolvimento Regional.</div>
+      <div class="ref-item"><strong>SEMADUR/PMCG (2023).</strong> Relatório Anual de Gestão de Resíduos Sólidos. Secretaria Municipal de Meio Ambiente e Gestão Urbana — Campo Grande/MS.</div>
+      <div class="ref-item"><strong>Brasil (2010).</strong> Lei nº 12.305/2010 — Política Nacional de Resíduos Sólidos (PNRS). Estabelece diretrizes e responsabilidades sobre resíduos sólidos no Brasil.</div>
+      <div class="ref-item"><strong>ONU (2015).</strong> Agenda 2030 para o Desenvolvimento Sustentável — Objetivos de Desenvolvimento Sustentável (ODS). Organização das Nações Unidas.</div>
+      <div class="ref-item"><strong>Brasil (2018).</strong> Lei nº 13.709/2018 — Lei Geral de Proteção de Dados Pessoais (LGPD). Presidência da República.</div>
+      <div class="ref-item"><strong>WhatsApp (2024).</strong> WhatsApp Business API Documentation. Meta Platforms Inc. developers.facebook.com/docs/whatsapp</div>
+      <div class="ref-item"><strong>Bonney, R. et al. (2014).</strong> Next Steps for Citizen Science. <em>Science</em>, 343(6178), 1436-1437. DOI: 10.1126/science.1251554</div>
+      <div class="ref-item"><strong>IPCC (2022).</strong> Climate Change 2022: Mitigation of Climate Change. Contribution of Working Group III to the Sixth Assessment Report. Cambridge University Press.</div>
+      <div class="ref-item"><strong>UFMS (2024).</strong> Plano de Desenvolvimento Institucional (PDI) 2024–2028. Universidade Federal de Mato Grosso do Sul.</div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="container">
+    <div class="cta-quote reveal">"O lixo que você <span>descarta</span> é o dado que nos ajuda a construir uma cidade mais <span>verde</span>."</div>
+    <div class="hero-actions" style="justify-content:center;" class="reveal">
+      <a href="#demo" class="btn btn-primary">▶ Experimentar o Demo</a>
+      <a href="#piloto" class="btn btn-ghost">📋 Ver plano do piloto</a>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div style="display:flex;align-items:center;gap:var(--space-3);">
+      <svg width="24" height="24" viewBox="0 0 28 28" fill="none" style="color:var(--color-primary);">
+        <circle cx="14" cy="14" r="13" stroke="currentColor" stroke-width="1.5"/>
+        <path d="M8 18c2-4 4-6 6-6s4 2 6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        <circle cx="14" cy="10" r="2" fill="currentColor"/>
+      </svg>
+      <span><strong>EcoBot UFMS</strong> · Hackathon de Inovação Social 2025</span>
+    </div>
+    <span>Equipe Lean Cidadão · UFMS · Campo Grande, MS · 2025</span>
+  </div>
+</footer>
+
+<script>
+// THEME TOGGLE
+(function(){
+  var t=document.querySelector('[data-theme-toggle]');
+  var r=document.documentElement;
+  var d=r.getAttribute('data-theme')||'dark';
+  function setTheme(m){d=m;r.setAttribute('data-theme',m);if(t)t.innerHTML=m==='dark'?'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>':'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>';}
+  setTheme(d);
+  if(t)t.addEventListener('click',function(){setTheme(d==='dark'?'light':'dark');});
+})();
+
+// HAMBURGER
+var hamburger=document.getElementById('hamburger');
+var mobileNav=document.getElementById('mobileNav');
+hamburger.addEventListener('click',function(){
+  var open=mobileNav.classList.toggle('open');
+  hamburger.setAttribute('aria-expanded',open);
+});
+document.querySelectorAll('.mobile-nav-link').forEach(function(l){
+  l.addEventListener('click',function(){mobileNav.classList.remove('open');hamburger.setAttribute('aria-expanded',false);});
+});
+
+// NAV ACTIVE
+var sections=document.querySelectorAll('section[id]');
+var navLinks=document.querySelectorAll('.nav-link');
+var io=new IntersectionObserver(function(entries){
+  entries.forEach(function(e){
+    if(e.isIntersecting){
+      navLinks.forEach(function(l){l.classList.remove('active');});
+      var a=document.querySelector('.nav-link[href="#'+e.target.id+'"]');
+      if(a)a.classList.add('active');
+    }
+  });
+},{threshold:0.3});
+sections.forEach(function(s){io.observe(s);});
+
+// REVEAL
+var reveals=document.querySelectorAll('.reveal');
+var revealObs=new IntersectionObserver(function(entries){
+  entries.forEach(function(e){if(e.isIntersecting)e.target.classList.add('visible');});
+},{threshold:0.1,rootMargin:'0px 0px -40px 0px'});
+reveals.forEach(function(r){revealObs.observe(r);});
+
+// COUNTERS (KPI)
+function animateCount(el,end,duration,prefix,suffix){
+  var start=0,startTime=null;
+  function step(timestamp){
+    if(!startTime)startTime=timestamp;
+    var prog=Math.min((timestamp-startTime)/duration,1);
+    var ease=1-Math.pow(1-prog,3);
+    var cur=Math.floor(ease*end);
+    el.textContent=(prefix||'')+cur.toLocaleString('pt-BR')+(suffix||'');
+    if(prog<1)requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+var kpiData=[{id:'kpi1',end:1847},{id:'kpi2',end:312},{id:'kpi3',end:4230},{id:'kpi4',end:28500}];
+var kpiDone=false;
+var kpiObs=new IntersectionObserver(function(entries){
+  if(entries[0].isIntersecting&&!kpiDone){
+    kpiDone=true;
+    kpiData.forEach(function(k){animateCount(document.getElementById(k.id),k.end,1800);});
+  }
+},{threshold:0.5});
+var kpiEl=document.querySelector('.dash-kpis');
+if(kpiEl)kpiObs.observe(kpiEl);
+
+// BAR CHART ANIMATION
+var barObs=new IntersectionObserver(function(entries){
+  entries.forEach(function(e){
+    if(e.isIntersecting){
+      e.target.querySelectorAll('.bar-fill').forEach(function(b){
+        setTimeout(function(){b.style.width=b.getAttribute('data-width')+'%';},100);
+      });
+    }
+  });
+},{threshold:0.3});
+document.querySelectorAll('.dashboard-demo').forEach(function(d){barObs.observe(d);});
+
+// HEATMAP POINTS
+var heatmap=document.getElementById('heatmap');
+if(heatmap){
+  var pts=[
+    {x:30,y:25,r:40,c:'rgba(224,92,92,0.55)',d:0},{x:65,y:40,r:32,c:'rgba(232,200,76,0.5)',d:400},
+    {x:50,y:65,r:50,c:'rgba(224,92,92,0.6)',d:800},{x:20,y:70,r:28,c:'rgba(245,166,35,0.45)',d:1200},
+    {x:80,y:55,r:36,c:'rgba(224,92,92,0.4)',d:300},{x:45,y:20,r:24,c:'rgba(232,200,76,0.35)',d:600},
+    {x:75,y:80,r:20,c:'rgba(76,175,110,0.4)',d:900}
+  ];
+  pts.forEach(function(p){
+    var el=document.createElement('div');
+    el.className='heat-point';
+    el.style.cssText='left:'+p.x+'%;top:'+p.y+'%;width:'+p.r+'px;height:'+p.r+'px;background:'+p.c+';animation-delay:'+p.d+'ms;';
+    heatmap.appendChild(el);
+  });
+}
+
+// CHATBOT SCENARIOS
+var scenarios={
+  denuncia:[
+    {role:'user',text:'Tem lixo jogado na calçada aqui no Tiradentes'},
+    {role:'bot',text:'📢 <strong>Denúncia Registrada!</strong><br><br>Entendido! Vou registrar sua denúncia de descarte irregular.<br><br>📍 <em>Bairro:</em> Tiradentes<br><br>Para completar, me envie:<br>1️⃣ Uma <strong>foto</strong> do local<br>2️⃣ O <strong>endereço completo</strong> (rua + número)'},
+    {role:'user',text:'[Foto enviada] Rua das Flores, 142, esquina com Av. Mato Grosso'},
+    {role:'bot',text:'✅ <strong>Protocolo: #2025-TIR-00847</strong><br><br>📍 Rua das Flores, 142 – Tiradentes<br>📸 Foto recebida e analisada<br>🗑️ Tipo: <em>Resíduo doméstico orgânico + plástico</em><br><br>🕐 Prazo de resposta: <strong>10 dias úteis</strong><br><br>Você recebe +<strong>50 EcoPontos</strong> 🌟<br><br>Acompanhe no EcoMapa: ecobot.ufms.br/map'},
+    {role:'user',text:'Obrigada!'},
+    {role:'bot',text:'Por nada! 🌱 Sua denúncia já aparece no EcoMapa público.<br><br>Cada denúncia ajuda a tornar Campo Grande mais limpa. Você é um <strong>EcoCidadão</strong>!<br><br>Quer fazer uma microaula sobre separação de lixo? 📚'}
+  ],
+  microaula:[
+    {role:'user',text:'Quero aprender sobre reciclagem'},
+    {role:'bot',text:'📚 <strong>EcoAprende — Microaula do Dia</strong><br><br>Ótimo! Vou adaptar o conteúdo para <strong>adultos</strong>. Esta microaula leva <em>5 minutos</em>.<br><br>Tema: <strong>🗑️ Os 4 Lixões que Você Tem em Casa</strong><br><br>Pronto para começar?'},
+    {role:'user',text:'Sim, pode começar'},
+    {role:'bot',text:'🟡 <strong>ORGÂNICO</strong> = restos de comida, cascas, folhas<br>→ <em>Lixeira marrom</em><br><br>🔴 <strong>NÃO RECICLÁVEL</strong> = papel higiênico, guardanapo sujo, esponja<br>→ <em>Lixeira vermelha ou preta</em><br><br>🔵 <strong>RECICLÁVEL</strong> = papel, plástico, metal, vidro LIMPOS<br>→ <em>Lixeira azul</em><br><br>🟠 <strong>PERIGOSO</strong> = pilha, remédio vencido, óleo de cozinha<br>→ <em>Ecoponto específico</em>'},
+    {role:'user',text:'E onde fica o Ecoponto mais próximo?'},
+    {role:'bot',text:'📍 <strong>Ecoponto Tiradentes</strong><br>Rua Ivinhema, 590 – a 1,2 km de você<br><br>⏰ Horário: Seg–Sex 7h–17h | Sáb 7h–12h<br><br>Aceita: pilhas, eletroeletrônicos, óleo, remédios, lâmpadas<br><br>Você ganhou +<strong>30 EcoPontos</strong> pela microaula! 🌟<br><br>Quer fazer o quiz sobre o que aprendeu? 🏆'}
+  ],
+  quiz:[
+    {role:'user',text:'Quero fazer o quiz'},
+    {role:'bot',text:'🏆 <strong>EcoQuiz Semanal — Semana 24/2025</strong><br><br>5 perguntas · +10 EcoPontos cada · Bônus +30 para 5/5!<br><br><strong>Pergunta 1 de 5:</strong><br><br>♻️ Onde você joga uma garrafa PET LIMPA?<br><br>A) Lixo orgânico<br>B) Lixeira de recicláveis (azul)<br>C) Lixo não reciclável<br>D) Ecoponto'},
+    {role:'user',text:'B'},
+    {role:'bot',text:'✅ <strong>Correto!</strong> +10 EcoPontos!<br><br>PET limpa vai para a lixeira azul (reciclável). Se estiver suja com restos de comida, lave antes ou descarte no lixo comum.<br><br><strong>Pergunta 2 de 5:</strong><br><br>🥚 Restos de casca de ovo vão para qual lixeira?<br><br>A) Azul (reciclável)<br>B) Marrom (orgânico)<br>C) Preta (não reciclável)<br>D) Ecoponto'},
+    {role:'user',text:'B'},
+    {role:'bot',text:'✅ <strong>Correto!</strong> +10 EcoPontos!<br><br>Casca de ovo é orgânico. Pode também ir para compostagem!<br><br>📊 Sua pontuação: <strong>20/20</strong> até agora<br><br>3 perguntas restantes... Continue assim! 🌟<br><br>[Digitando próxima pergunta...]'}
+  ],
+  ecoponto:[
+    {role:'user',text:'Preciso descartar uma TV velha, onde levo?'},
+    {role:'bot',text:'📺 Ótima pergunta! Eletrônicos (TV, monitor, computador) são resíduos perigosos e precisam de descarte especial.<br><br>📍 <strong>Ecoponto mais próximo que aceita eletrônicos:</strong>'},
+    {role:'user',text:'Moro no Coronel Antonino'},
+    {role:'bot',text:'📍 <strong>Ecoponto Central</strong><br>Av. Duque de Caxias, 1640 – Amambaí<br>📏 3,2 km do bairro Coronel Antonino<br><br>⏰ Seg–Sex: 7h–17h | Sáb: 7h–12h<br>📺 Aceita: TV, monitor, CPU, celular, pilha, bateria<br><br>🆓 <strong>Gratuito</strong> para pessoa física<br><br>💡 Dica: leve junto pilhas e remédios vencidos para aproveitar a ida!<br><br>Quer que eu agende um lembrete para amanhã? 📅'}
+  ],
+  crianca:[
+    {role:'user',text:'Oi, tenho 8 anos e quero aprender sobre lixo'},
+    {role:'bot',text:'🌟 Olá, <strong>EcoHerói</strong>! Que legal que você quer salvar o planeta! 🦸<br><br>Vou te ensinar sobre os <strong>4 Monstros do Lixo</strong>!<br><br>Pronto para a aventura? 🌍'},
+    {role:'user',text:'SIM!!! 🌟'},
+    {role:'bot',text:'🟢 <strong>EcoVerde</strong> (orgânico) = cascas de fruta, restos de comida<br>Ele vira <em>adubo</em> e alimenta plantinhas! 🌱<br><br>🔵 <strong>EcoAzul</strong> (reciclável) = garrafa PET, lata, papel<br>Ele vira <em>coisa nova</em> de volta! ♻️<br><br>🔴 <strong>EcoVermelho</strong> (não reciclável) = guardanapo sujo<br>Ele vai para o aterro... 😢<br><br>⚡ <strong>EcoPerigo</strong> (pilhas, remédio) = não pode misturar!<br>Vai para o <em>Ecoponto especial</em>! 🚨'},
+    {role:'user',text:'Que legal! Qual é o meu EcoPoder?'},
+    {role:'bot',text:'🏅 <strong>Parabéns! Você ganhou o título:</strong><br><br>⭐ <em>EcoHerói Iniciante</em><br>✅ Microaula completa: +20 EcoPontos<br><br>Seu desafio desta semana:<br>🌱 Separe o lixo da sua casa por 3 dias e mostre para um adulto! Tire uma foto e me envie para ganhar +50 EcoPontos! 📸'}
+  ],
+  progresso:[
+    {role:'user',text:'Quero ver meu progresso'},
+    {role:'bot',text:'⭐ <strong>Seu Painel EcoBot</strong><br><br>👤 Perfil: Adulto | Bairro: Tiradentes<br>📅 Membro desde: 15/03/2025<br><br>🏆 <strong>EcoPontos: 340</strong><br>📊 Ranking local: <em>#7 no Tiradentes</em><br>📊 Ranking geral: <em>#42 nos 6 bairros</em>'},
+    {role:'user',text:'O que eu já fiz?'},
+    {role:'bot',text:'📋 <strong>Seu Histórico:</strong><br><br>✅ 3 denúncias registradas (2 resolvidas)<br>✅ 5 microaulas concluídas<br>✅ 2 quizzes — pontuação média: 8/10<br>✅ 1 Ecoponto visitado<br><br>🏅 <strong>Conquistas desbloqueadas:</strong><br>🦸 EcoCidadão Ativo<br>📚 Aluno Aplicado (5 aulas)<br>📢 Fiscal Ambiental (3 denúncias)<br><br>Faltam <strong>160 pontos</strong> para o próximo nível: <em>EcoGuardião</em>! 🌟'}
+  ]
+};
+
+var currentScenario=null;
+var msgIdx=0;
+var isTyping=false;
+
+function addMsg(role,html){
+  var box=document.getElementById('chatMessages');
+  var d=document.createElement('div');
+  d.className='chat-msg '+role;
+  d.innerHTML=html+'<div class="chat-time">Agora</div>';
+  box.appendChild(d);
+  box.scrollTop=box.scrollHeight;
+}
+
+function showTyping(){
+  var box=document.getElementById('chatMessages');
+  var d=document.createElement('div');
+  d.id='typing';
+  d.className='chat-msg bot';
+  d.innerHTML='<em style="color:var(--color-text-faint)">digitando...</em>';
+  box.appendChild(d);
+  box.scrollTop=box.scrollHeight;
+}
+
+function removeTyping(){
+  var t=document.getElementById('typing');
+  if(t)t.remove();
+}
+
+function nextMsg(){
+  if(!currentScenario||msgIdx>=currentScenario.length||isTyping)return;
+  isTyping=true;
+  var msg=currentScenario[msgIdx];
+  if(msg.role==='bot'){
+    showTyping();
+    setTimeout(function(){
+      removeTyping();
+      addMsg('bot',msg.text);
+      msgIdx++;
+      isTyping=false;
+      if(msgIdx<currentScenario.length&&currentScenario[msgIdx].role==='bot'){
+        setTimeout(nextMsg,1200);
+      }
+    },1000+msg.text.length*10);
+  } else {
+    addMsg('user',msg.text);
+    msgIdx++;
+    isTyping=false;
+    setTimeout(nextMsg,800);
+  }
+}
+
+function runScenario(name){
+  document.querySelectorAll('.scenario-btn').forEach(function(b){b.classList.remove('active');});
+  event.currentTarget.classList.add('active');
+  var box=document.getElementById('chatMessages');
+  box.innerHTML='<div class="chat-msg bot">Olá! 🌿 Sou o <strong>EcoBot UFMS</strong>. Como posso ajudar?<div class="chat-time">Agora</div></div>';
+  currentScenario=scenarios[name];
+  msgIdx=0;
+  isTyping=false;
+  setTimeout(nextMsg,600);
+}
+
+function sendCustomMsg(){
+  var input=document.getElementById('chatInput');
+  var val=input.value.trim();
+  if(!val)return;
+  addMsg('user',val);
+  input.value='';
+  setTimeout(function(){
+    var responses=[
+      'Entendido! 🌿 Posso ajudar com denúncias, localizar Ecopontos, microaulas e quizzes. Selecione um cenário ao lado ou me faça uma pergunta!',
+      'Ótima iniciativa! 🌱 Para registrar uma denúncia, me envie uma foto e o endereço. Para microaulas, diga seu perfil (criança, jovem, adulto ou idoso)!',
+      'Obrigado por usar o EcoBot! ♻️ Você ganhou +5 EcoPontos pela interação hoje. Continue participando!'
+    ];
+    addMsg('bot',responses[Math.floor(Math.random()*responses.length)]);
+  },800);
+}
+document.getElementById('chatInput').addEventListener('keydown',function(e){
+  if(e.key==='Enter')sendCustomMsg();
+});
+
+// SCROLL COUNTER HEROES
+var heroCounters=document.querySelectorAll('[data-count]');
+var heroDone=false;
+var heroObs=new IntersectionObserver(function(entries){
+  if(entries[0].isIntersecting&&!heroDone){
+    heroDone=true;
+    // already done as text
+  }
+},{threshold:0.5});
+var heroEl=document.querySelector('.hero-stats');
+if(heroEl)heroObs.observe(heroEl);
+
+</script>
+</body>
+</html>
